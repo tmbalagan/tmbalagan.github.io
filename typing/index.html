@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .score {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .word {
+            font-size: 100px;
+            font-weight: bold;
+            letter-spacing: 5px;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+
+        .btn {
+            background-color: #e0e0e0;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #ccc;
+        }
+
+        .sidebar {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            text-align: left;
+        }
+
+        .counters {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .counter {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-right: 10px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .correct {
+            background-color: #a9e5a9;
+            color: #000;
+        }
+
+        .letter {
+            outline: 1px solid #fff;
+            letter-spacing: 5px;
+        }
+
+        .incorrect {
+            background-color: #f28b82;
+            color: #000;
+        }
+
+        .medals {
+            display: grid;
+            grid-template-columns: repeat(4, 40px);
+            grid-gap: 10px;
+            margin-top: 10px;
+        }
+
+        .counters {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .correct-counter,
+        .incorrect-counter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .medals-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .medals-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .medal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            width: 40px;
+            height: 40px;
+            background-color: gold;
+            border-radius: 50%;
+            max-height: 250px;
+            overflow: auto;
+        }
+
+        .word-pronounce,
+        .mute-text-speak {
+            display: inline-block;
+            cursor: pointer;
+            font-size: 30px;
+            margin-top: 30px;
+            margin-left: 10px;
+        }
+
+        .letter-underline {
+            border-bottom: 5px solid blue;
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 12px;
+        }
+
+        .info-icon {
+            font-size: 12px;
+            cursor: default;
+        }
+    </style>
+    <title>Typing Practice UI</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="score">
+            <span class="score-value" title="Accurate Word Typing Count" id="stars"></span>
+        </div>
+        <div class="word" id="word-display">grapefruit</div>
+        <span class="word-pronounce" title="Learn to pronounce" id="learn-to-pronouce">🗣️</span>
+        <span class="mute-text-speak" id="mute-text-speak" title="Toggle Mute and Listen">🔊</span>
+        <p id="message" class="message"></p>
+        <div class="controls">
+            <button class="btn" title="Clear All" id="reset">Reset</button>
+            <button class="btn" title="Toggle Full Screen" id="fullscreen">
+                Full Screen
+            </button>
+        </div>
+    </div>
+    <div class="sidebar">
+        <div class="counters">
+            <div class="correct-counter">
+                <span class="counter correct" id="correct-count">0</span>
+                <span class="label">Correct
+                    <span title="Accurate Typing Count" class="info-icon">ℹ️</span></span>
+            </div>
+            <div class="incorrect-counter">
+                <span class="counter incorrect" id="incorrect-count">0</span>
+                <span class="label">Incorrect
+                    <span title="Incorrect Letter Count" class="info-icon">ℹ️</span></span>
+            </div>
+        </div>
+        <div class="medals-section">
+            <h3>
+                Medals
+                <span title="Earn 10 stars and receive 1 medal." class="info-icon">ℹ️</span>
+            </h3>
+            <div class="medals-grid" id="medals"></div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const message = document.getElementById("message");
+            const wordDisplay = document.getElementById("word-display");
+            const stars = document.getElementById("stars");
+            const correctLetterCount = document.getElementById("correct-count");
+            const inCorrectLetterCount = document.getElementById("incorrect-count");
+            const medals = document.getElementById("medals");
+            const muteTextToSpeak = document.getElementById("mute-text-speak");
+            let isTextToSpeak = true;
+
+            let starsCount = parseInt(localStorage.getItem("count") || "0", 10);
+            stars.innerHTML = `${starsCount}⭐`;
+
+            // gold medal count
+            let medalsCount = parseInt(localStorage.getItem("medals") || "0", 10);
+
+            function createGoldMedals(count) {
+                for (let i = 0; i < count; i++) {
+                    const newMedalDiv = document.createElement("div");
+                    newMedalDiv.className = "medal";
+                    const goldMedalEmoji = document.createTextNode("🥇");
+                    newMedalDiv.appendChild(goldMedalEmoji);
+                    medals.appendChild(newMedalDiv);
+                }
+            }
+
+            medalsCount > 0 ? createGoldMedals(medalsCount) : "";
+
+            let totalMedals = medalsCount;
+
+            // List of words to practice
+            const words = [
+                // Animals
+                "cat",
+                "dog",
+                "bear",
+                "monkey",
+                "duck",
+                "fish",
+                "frog",
+                "deer",
+                "cow",
+                "pig",
+                "goat",
+                "puppy",
+                "kitten",
+                "parrot",
+                "penguin",
+
+                // Fruits
+                "apple",
+                "banana",
+                "orange",
+                "grape",
+                "strawberry",
+                "watermelon",
+
+                // Vegetables
+                "carrot",
+                "potato",
+                "tomato",
+                "onion",
+                "corn",
+                "peas",
+                "cucumber",
+
+                // Numbers (1-10)
+                "one",
+                "two",
+                "three",
+                "four",
+                "five",
+                "six",
+                "seven",
+                "eight",
+                "nine",
+                "ten",
+
+                // Body Parts
+                "head",
+                "eyes",
+                "nose",
+                "mouth",
+                "hand",
+                "foot",
+                "leg",
+                "arm",
+            ];
+
+            // Function to get a random word
+            function getRandomWord() {
+                return words[Math.floor(Math.random() * words.length)];
+            }
+
+            // Set initial word
+            let targetWord = getRandomWord();
+            let currentWord = "";
+            wordDisplay.innerHTML = `<span class="letter">${targetWord}</span>`;
+
+
+            function textToSpeak(text) {
+                if ("speechSynthesis" in window) {
+                    const synth = window.speechSynthesis;
+
+                    let defaultVoice = null
+
+
+                    if (synth.speaking || synth.pending) {
+                        console.log("Already speaking.");
+                        synth.cancel(); // Stops any current speech
+                    } else if (synth.paused) {
+                        synth.resume();
+                    }
+
+                    function loadVoices() {
+                        const voices = synth.getVoices();
+                        defaultVoice = voices.find(voice => voice.lang === 'hi-IN')
+                    }
+
+                    if (synth.onvoiceschanged !== undefined) {
+                        synth.onvoiceschanged = loadVoices;
+                    }
+
+                    const utterance = new SpeechSynthesisUtterance();
+                    utterance.text = text;
+                    utterance.lang = "hi-IN"; // In hindi Language
+                    utterance.pitch = 1; // Pitch
+                    utterance.rate = 1; // Increase speed slightly
+                    utterance.volume = 1; // Volume
+                    utterance.voice = defaultVoice
+
+
+                    utterance.onstart = (event) => {
+                        console.log(`We have started uttering this speech: ${event.utterance.text}`);
+                    };
+
+                    utterance.onend = () => {
+                        // Optional: Handle end of speech
+                        console.log(`Utterance has finished `);
+                    };
+
+                    utterance.onerror = (event) => {
+                        // console.log(event)
+                        if (event.error != "interrupted") {
+                            message.textContent = "An error occurred: " + event.error;
+                            message.style.color = "red";
+                        }
+                    };
+
+                    console.log('utterance::: ', utterance)
+
+                    synth.speak(utterance);
+                } else {
+                    console.log("Speech Synthesis not supported.");
+                }
+            }
+
+            function updateWordDisplay() {
+                let nextCharPlace = 0;
+                const displayText = Array.from(targetWord)
+                    .map((char, index) => {
+                        if (index < currentWord.length) {
+                            nextCharPlace = index + 1;
+                            if (char === currentWord[index]) {
+                                return `<span class="correct letter">${char}</span>`;
+                            } else {
+                                return `<span class="incorrect letter">${char}</span>`;
+                            }
+                        } else {
+                            if (nextCharPlace == index) {
+                                isTextToSpeak ? textToSpeak(targetWord[index]) : ""; // next letter voice over
+                                return `<span class="letter-underline letter">${char}</span>`;
+                            } else {
+                                return `<span class="letter">${char}</span>`;
+                            }
+                        }
+                    })
+                    .join("");
+                wordDisplay.innerHTML = displayText;
+            }
+
+            let correctLetterTypedCount = 0;
+            let inCorrectLetterTypedCount = 0;
+
+            function validateWord(eventKey) {
+                if (currentWord === targetWord) {
+                    message.textContent = "Correct!";
+                    message.style.color = "green";
+                    starsCount += 1;
+
+                    localStorage.setItem("count", starsCount);
+                    stars.innerHTML = `${starsCount}⭐`;
+                    // stars.classList.add("animate");
+
+                    isTextToSpeak ? textToSpeak(targetWord) : "";
+
+                    // create medals
+                    if (starsCount % 10 == 0) {
+                        totalMedals += 1;
+                        // medals.innerHTML = `<div class="medal">${totalMedals}</div>`;
+                        localStorage.setItem("medals", totalMedals);
+
+                        const newMedalDiv = document.createElement("div");
+                        newMedalDiv.className = "medal";
+                        const goldMedalEmoji = document.createTextNode("🥇");
+                        newMedalDiv.appendChild(goldMedalEmoji);
+                        medals.appendChild(newMedalDiv);
+                    }
+
+                    if (navigator.onLine) {
+                        // You are online
+                        confetti({
+                            particleCount: 100,
+                            spread: 70,
+                            origin: { y: 0.6 },
+                        });
+                    }
+
+                    setTimeout(() => {
+                        currentWord = ""; // Clear current input
+                        targetWord = getRandomWord();
+                        wordDisplay.innerHTML = `<span class="letter">${targetWord}</span>`;
+                        message.textContent = "";
+                        message.style.color = "";
+                        isTextToSpeak ? textToSpeak(targetWord.slice(0, 1)) : "";
+                    }, 1000);
+                } else if (targetWord.startsWith(currentWord)) {
+                    message.textContent = ""; // Clear message if still typing correctly
+
+                    if (
+                        eventKey != "Backspace" &&
+                        correctLetterTypedCount != targetWord.length
+                    ) {
+                        correctLetterTypedCount += 1;
+                        correctLetterCount.innerHTML = correctLetterTypedCount;
+                    }
+                } else {
+                    message.textContent = "Incorrect. Try again!";
+                    message.style.color = "red";
+                    if (eventKey != "Backspace") {
+                        inCorrectLetterTypedCount += 1;
+                        inCorrectLetterCount.innerHTML = inCorrectLetterTypedCount;
+                    }
+                }
+            }
+
+            // Function to handle global keyboard events
+            let keyPressed = false; // to prevent continuously pressing the key
+            function handleKeyDown(event) {
+                if (!keyPressed) {
+                    keyPressed = true; // Set the flag to true to prevent further triggers
+                    const key = event.key;
+
+                    // Prevent default behavior for restricted keys
+                    if (
+                        [
+                            "Tab",
+                            "Alt",
+                            "Enter",
+                            "CapsLock",
+                            "Shift",
+                            "Control",
+                            "WakeUp",
+                            "PageUp",
+                            "PageDown",
+                            "ArrowUp",
+                            "ArrowDown",
+                            "ArrowRight",
+                            "ArrowLeft",
+                        ].includes(key)
+                    ) {
+                        return; // Exit the function to avoid further processing
+                    }
+
+                    if (key === "Backspace") {
+                        currentWord = currentWord.slice(0, -1); // Remove last character
+                        validateWord(key);
+                        updateWordDisplay();
+
+                        event.preventDefault();
+                    } else if (
+                        (key >= "a" && key <= "z") ||
+                        (key >= "A" && key <= "Z") ||
+                        event.code == "Space"
+                    ) {
+                        if (currentWord.length != targetWord.length) {
+                            currentWord += key.toLowerCase();
+                            catchWord = currentWord;
+
+                            validateWord(key);
+                            updateWordDisplay();
+                        }
+                    }
+                    event.preventDefault();
+                }
+            }
+
+            document.addEventListener("keydown", handleKeyDown);
+
+            document.addEventListener("keyup", function () {
+                keyPressed = false; // Reset the flag when the key is released, for prevent continuous pressing same letter
+            });
+
+            function resetPoints() {
+                const reset = confirm("Are you sure to reset ");
+                if (reset) {
+                    localStorage.removeItem("medals");
+                    localStorage.removeItem("count");
+
+                    correctLetterTypedCount = 0;
+                    inCorrectLetterTypedCount = 0;
+                    window.location.reload();
+                }
+            }
+
+            function fullScreenMode() {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen();
+                    document.getElementById("fullscreen").innerHTML =
+                        "Exit Full screen";
+                } else {
+                    document.exitFullscreen();
+                    document.getElementById("fullscreen").innerHTML = "Full screen";
+                }
+            }
+
+            function handleFullscreenChange() {
+                if (!document.fullscreenElement) {
+                    // console.log('Exited fullscreen mode');
+                    document.getElementById("fullscreen").innerHTML = "Full screen";
+                } else {
+                    // console.log('Entered fullscreen mode');
+                    document.getElementById("fullscreen").innerHTML =
+                        "Exit Full screen";
+                }
+            }
+
+            function listenWord() {
+                isTextToSpeak ? textToSpeak(targetWord) : "";
+            }
+
+            function muteTextSpeak() {
+                if (muteTextToSpeak.innerHTML === "🔊") {
+                    muteTextToSpeak.innerHTML = "🔇";
+                    textToSpeak("Mute");
+                    isTextToSpeak = false;
+                    // Mute text-to-speech here (if applicable)
+                } else {
+                    muteTextToSpeak.innerHTML = "🔊";
+                    textToSpeak("Enable Listen");
+                    isTextToSpeak = true;
+                    // Unmute text-to-speech here (if applicable)
+                }
+            }
+
+            document.addEventListener("fullscreenchange", handleFullscreenChange);
+            document.getElementById("reset").addEventListener("click", resetPoints);
+            document
+                .getElementById("fullscreen")
+                .addEventListener("click", fullScreenMode);
+            document
+                .getElementById("learn-to-pronouce")
+                .addEventListener("click", listenWord);
+
+            document
+                .getElementById("mute-text-speak")
+                .addEventListener("click", muteTextSpeak);
+        });
+    </script>
+</body>
+
+</html>
