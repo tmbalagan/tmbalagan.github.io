@@ -1,6 +1,6 @@
 # 🖊️ Simple Typing Practice for Children
 
-Welcome to our fun typing practice tool designed for kids! 🌟
+Welcome to the fun typing practice tool designed for kids! 🌟
 
 ## Features
 
