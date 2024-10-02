@@ -27,9 +27,6 @@
   <style>
     body {
       font-family: "Roboto Mono", monospace;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       padding: 20px;
       margin: 0;
       height: 100vh;
@@ -41,7 +38,7 @@
     }
 
     .buttons {
-      margin-top: 20px;
+      margin: 20px 0;
       display: flex;
       justify-content: flex-end;
       align-items: flex-end;
@@ -210,10 +207,11 @@
     }
 
     .input-box {
-      padding: 10px;
       font-size: 16px;
+      padding: 5px;
       border-radius: 6px;
       margin-top: 10px;
+      height: 25px;
     }
 
     .label {
@@ -296,11 +294,11 @@
         <form id="simpleForm" onsubmit="handleSubmit(event)">
           <label for="eaten" class="label">Eaten fruit: 😋</label>
           <br />
-          <input type="text" id="eaten" name="eaten" placeholder="Enter eaten fruit" class="input-box"
+          <input type="number" id="eaten" name="eaten" placeholder="Enter eaten fruit" class="input-box"
             autocomplete="off" required />
           <br /><br />
           <label for="remaining" class="label">Remaining fruit: 📦</label>
-          <input type="text" id="remaining" name="remaining" placeholder="Enter remaining fruit" class="input-box"
+          <input type="number" id="remaining" name="remaining" placeholder="Enter remaining fruit" class="input-box"
             autocomplete="off" required />
           <br /><br />
           <button type="submit">Submit</button>
@@ -348,10 +346,10 @@
       const eaten = document.getElementById("eaten").value;
       const remaining = document.getElementById("remaining").value;
 
-      if (!eaten || !remaining) {
-        alert("Please put in both numbers to check! 😊✨");
-        return;
-      }
+      // if (!eaten || !remaining) {
+      //   alert("Please put in both numbers to check! 😊✨");
+      //   return;
+      // }
 
       if (parseInt(eaten) + parseInt(remaining) === totalFruits) {
         document.getElementById("eaten").value = "";
