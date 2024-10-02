@@ -1,6 +1,6 @@
 # 🍏 Welcome to Fruit Funland! 🍍
 
-Join us in **Fruit Funland** where you can drag and drop fruits to your friend and watch them munch away! This fun-filled game is designed for children and is best played on a laptop browser.
+Join us in **Fruit Funland** where you can drag and drop fruits to your friend and watch them munch away! This fun-filled game is designed for children.
 
 ## 🎮 Game Features:
 
