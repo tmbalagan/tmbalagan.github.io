@@ -166,28 +166,10 @@
       margin: 5px;
     }
 
-    @media (max-width: 600px) {
-      .person {
-        width: 80px;
-        height: 160px;
-      }
-
-      .fruit {
-        width: 40px;
-        height: 40px;
-        font-size: 30px;
-      }
-
-      button {
-        font-size: 14px;
-      }
-    }
-
     .main {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       gap: 10px;
-      padding: 20px;
     }
 
     .main-content {
@@ -236,6 +218,41 @@
 
     .label {
       font-size: 16px;
+    }
+
+    #empty-eaten-fruit {
+      font-style: italic;
+      padding-top: 10px;
+    }
+
+    @media (max-width: 1024px) {
+      .main {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .select-fruits {
+        border-top: 3px dotted grey;
+        padding-top: 20px;
+        margin-top: 0;
+      }
+
+      h2 {
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 600px) {
+
+      .fruit {
+        width: 40px;
+        height: 40px;
+        font-size: 30px;
+      }
+
+      button {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
@@ -379,6 +396,11 @@
         apples.forEach((fruit) => {
           fruit.addEventListener("dragstart", dragStart);
           fruit.addEventListener("dragend", dragEnd);
+
+          // Touch event handlers for mobile
+          fruit.addEventListener("touchstart", touchStart);
+          fruit.addEventListener("touchend", touchEnd);
+          fruit.addEventListener("touchmove", touchMove);
         });
 
         remainingApples = document.querySelectorAll(".fruit").length;
@@ -404,7 +426,7 @@
 
     function dragLeave(e) {
       e.preventDefault();
-      person.classList.add("drag-over");
+      person.classList.remove("drag-over");
     }
 
     person.addEventListener("dragover", (e) => {
@@ -482,6 +504,125 @@
       }
     });
 
+    // Touch events
+    let currentTouchFruit = null;
+
+    function touchStart(e) {
+      e.preventDefault();
+      const fruitId = e.target.id;
+      currentTouchFruit = document.getElementById(fruitId);
+      currentTouchFruit.classList.add("dragging");
+      currentTouchFruit.classList.add("drag-cursor");
+
+
+      document.getElementById('person').classList.add("drag-over");
+
+    }
+
+    function touchEnd(e) {
+      e.preventDefault();
+      if (!currentTouchFruit) return;
+
+      // Check if dropped on the person
+      const personRect = person.getBoundingClientRect();
+      const fruitRect = currentTouchFruit.getBoundingClientRect();
+
+      if (
+        fruitRect.left < personRect.right &&
+        fruitRect.right > personRect.left &&
+        fruitRect.top < personRect.bottom &&
+        fruitRect.bottom > personRect.top
+      ) {
+        handleDrop(currentTouchFruit);
+      }
+
+      currentTouchFruit.classList.remove("dragging");
+      currentTouchFruit.classList.remove("drag-cursor");
+      document.getElementById('person').classList.remove("drag-over");
+      currentTouchFruit = null; // Reset the current touch fruit
+    }
+
+    function touchMove(e) {
+      e.preventDefault();
+      if (!currentTouchFruit) return;
+
+      // Get touch position
+      const touch = e.touches[0];
+
+      // Update position of the fruit
+      currentTouchFruit.style.position = "absolute";
+
+      currentTouchFruit.style.left = `${touch.clientX - (currentTouchFruit.offsetWidth / 2)}px`;
+      currentTouchFruit.style.top = `${touch.clientY - (currentTouchFruit.offsetHeight / 2)}px`;
+    }
+
+
+
+    function handleDrop(fruit) {
+      // Clone the fruit to animate it moving toward the person's mouth
+      const clonedApple = fruit.cloneNode(true);
+      clonedApple.classList.add("eaten");
+
+      // Calculate position to move the fruit toward the person's mouth
+      const personRect = personMouth.getBoundingClientRect();
+      const personDropRect = person.getBoundingClientRect();
+      const appleRect = fruit.getBoundingClientRect();
+
+      clonedApple.style.position = "absolute";
+      clonedApple.style.left = `${appleRect.left - personDropRect.left}px`;
+      clonedApple.style.top = `${appleRect.top - personDropRect.top}px`;
+
+      person.appendChild(clonedApple);
+
+      // Move the fruit toward the person's mouth
+      setTimeout(() => {
+        clonedApple.style.transform = `translate(${personRect.left - appleRect.left
+          }px, ${personRect.top - appleRect.top}px) scale(0)`;
+        clonedApple.style.opacity = 0;
+        personMouth.classList.add("chewing"); // Start the chewing animation
+      }, 10); // Small delay to allow positioning before animation
+
+      // Hide the original fruit and remove the clone after animation
+      fruit.style.visibility = "hidden"; // Hide the original fruit
+      fruit.classList.remove("dragging");
+
+      // Play chewing sound
+      chewingSound.currentTime = startTime; // Reset sound to start
+
+      chewingSound.addEventListener("timeupdate", function () {
+        if (chewingSound.currentTime >= endTime) {
+          chewingSound.pause(); // Pause the audio when it reaches endTime
+        }
+      });
+
+      chewingSound.play(); // Play the sound
+
+      setTimeout(() => {
+        person.removeChild(clonedApple);
+      }, 1000); // Matches the transition duration (1 second)
+
+      // Stop the chewing animation after it completes
+      setTimeout(() => {
+        personMouth.classList.remove("chewing");
+      }, 1500); // 3 chewing cycles (3 * 0.5s)
+
+      // Update remaining apples count
+      remainingApples--;
+
+      // Increment eaten apples count and update the list with fruit emoji
+      eatenApplesCount++;
+      const listItem = document.createElement("div");
+      listItem.className = "fruit"; // Apply the same fruit class style
+      listItem.textContent = selectedValue; // Add fruit emoji to the list
+      eatenList.appendChild(listItem);
+
+      document.body.classList.remove("drag-cursor");
+      person.classList.remove("drag-over");
+
+      emptyEatenFruit.style.visibility = "hidden";
+      document.getElementById("eaten-apples").style.visibility = "visible";
+    }
+
     // Reset functionality
     document.getElementById("reset-button").addEventListener("click", () => {
       remainingApples = 5;
@@ -491,6 +632,8 @@
 
       // Show original apples again
       document.querySelectorAll(".fruit").forEach((fruit) => {
+        //  to remove position styles set touch move
+        fruit.removeAttribute('style');
         fruit.style.visibility = "visible";
       });
 
