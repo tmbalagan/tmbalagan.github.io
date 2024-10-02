@@ -436,69 +436,7 @@
         e.preventDefault();
         const fruitId = e.dataTransfer.getData("text");
         const fruit = document.getElementById(fruitId);
-
-        // Clone the fruit to animate it moving toward the person's mouth
-        const clonedApple = fruit.cloneNode(true);
-        clonedApple.classList.add("eaten");
-
-        // Calculate position to move the fruit toward the person's mouth
-        const personRect = personMouth.getBoundingClientRect();
-        const personDropRect = person.getBoundingClientRect();
-        const appleRect = fruit.getBoundingClientRect();
-
-        clonedApple.style.position = "absolute";
-        clonedApple.style.left = `${appleRect.left - personDropRect.left}px`;
-        clonedApple.style.top = `${appleRect.top - personDropRect.top}px`;
-
-        person.appendChild(clonedApple);
-
-        // Move the fruit toward the person's mouth
-        setTimeout(() => {
-          clonedApple.style.transform = `translate(${personRect.left - appleRect.left
-            }px, ${personRect.top - appleRect.top}px) scale(0)`;
-          clonedApple.style.opacity = 0;
-          personMouth.classList.add("chewing"); // Start the chewing animation
-        }, 10); // Small delay to allow positioning before animation
-
-        // Hide the original fruit and remove the clone after animation
-        fruit.style.visibility = "hidden"; // Hide the original fruit
-        fruit.classList.remove("dragging");
-
-        // Play chewing sound
-        chewingSound.currentTime = startTime; // Reset sound to start
-
-        chewingSound.addEventListener("timeupdate", function () {
-          if (chewingSound.currentTime >= endTime) {
-            chewingSound.pause(); // Pause the audio when it reaches endTime
-          }
-        });
-
-        chewingSound.play(); // Play the sound
-
-        setTimeout(() => {
-          person.removeChild(clonedApple);
-        }, 1000); // Matches the transition duration (1 second)
-
-        // Stop the chewing animation after it completes
-        setTimeout(() => {
-          personMouth.classList.remove("chewing");
-        }, 1500); // 3 chewing cycles (3 * 0.5s)
-
-        // Update remaining apples count
-        remainingApples--;
-
-        // Increment eaten apples count and update the list with fruit emoji
-        eatenApplesCount++;
-        const listItem = document.createElement("div");
-        listItem.className = "fruit"; // Apply the same fruit class style
-        listItem.textContent = selectedValue; // Add fruit emoji to the list
-        eatenList.appendChild(listItem);
-
-        document.body.classList.remove("drag-cursor");
-        person.classList.remove("drag-over");
-
-        emptyEatenFruit.style.visibility = "hidden";
-        document.getElementById("eaten-apples").style.visibility = "visible";
+        handleDrop(fruit);
       }
     });
 
