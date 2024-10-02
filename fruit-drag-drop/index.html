@@ -360,7 +360,8 @@
 
       emptyEatenFruit.style.visibility = "visible";
       document.getElementById("eaten-apples").style.visibility = "hidden";
-
+      document.getElementById("eaten").value = "";
+      document.getElementById("remaining").value = "";
       renderItems(selectedValue);
     }
 
