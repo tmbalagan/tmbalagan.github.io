@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Find the Missing Letter or Number!</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Join the fun and exciting Find the Missing Value Game! Help our friendly characters find missing letters and numbers while having a blast! Perfect for kids aged 5 and up.">
+    <meta name="keywords"
+        content="missing value game, find the missing letter, find the missing number, educational game, kids games, fun games for children, interactive learning">
+    <meta name="author" content="Your Name or Organization">
+    <meta property="og:title" content="🕵️‍♂️ Find the Missing Value Game! 🔍✨">
+    <meta property="og:description"
+        content="Help your child find the missing letters and numbers in this exciting and fun game! Perfect for young learners!">
+    <meta property="og:url" content="https://tmbalagan.github.io/find-the-missing">
+    <meta name="twitter:title" content="🕵️‍♂️ Find the Missing Value Game! 🔍✨">
+    <meta name="twitter:description"
+        content="Join the adventure and help find the missing values! Fun for kids aged 5 and up.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Roboto Mono", monospace;
+            margin: 0 auto;
+            margin-top: 50px;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .letters {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .letter {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 25px;
+            border: 1px solid #000;
+            border-radius: 8px;
+            width: 30px;
+            height: 30px;
+        }
+
+        .missing-letter {
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: capitalize;
+            width: 50px;
+            height: 50px;
+            border: 3px solid blue;
+            border-radius: 8px;
+            text-align: center;
+            visibility: visible;
+            position: relative;
+            transition: transform 0.5s ease;
+        }
+
+        .valid-letter>.missing-letter {
+            border: 1px solid #a9e5a9;
+            background-color: #a9e5a9;
+        }
+
+        .invalid-letter>.missing-letter {
+            background-color: #f28b82;
+            border: 1px solid #f28b82;
+        }
+
+        .main {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+
+        .main-content {
+            grid-column: span 3;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        select {
+            height: 30px;
+            border-radius: 4px;
+            background-color: #fff;
+        }
+
+        .select-dropdown {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .select-dropdown option,
+        .select-dropdown select {
+            font-size: 16px;
+        }
+
+        .jump {
+            animation: jump 1s ease-in-out infinite;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        @keyframes jump {
+            0% {
+                transform: translateY(0);
+                /* Start at the original position */
+            }
+
+            50% {
+                transform: translateY(-3px);
+                /* Move up by 100px */
+            }
+
+            100% {
+                transform: translateY(0);
+                /* Return to the original position */
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .main {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .select-dropdown {
+                padding-top: 20px;
+                margin-top: 0;
+            }
+
+            h2 {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="main">
+        <section class="content"></section>
+        <section class="main-content content">
+            <h2 id="game-title">🎯 Let's Find the Missing Letter or Number! 🔍</h2>
+            <div class="letters" id="letters"></div>
+        </section>
+        <section class="content">
+            <div class="select-dropdown">
+                <label for="level">Choose Level</label>
+                <select id="level" onchange="handleLevel()">
+                    <option value="1">Level 1</option>
+                    <option value="2">Level 2</option>
+                    <option value="3">Level 3</option>
+                    <option value="4">Level 4</option>
+                </select>
+            </div>
+            <div class="select-dropdown">
+                <label for="display-type">Choose Display Type</label>
+                <select id="display-type" onchange="handleDisplayType()">
+                    <option value="alphabet">Alphabets</option>
+                    <option value="number">Numbers</option>
+                </select>
+            </div>
+        </section>
+    </main>
+    <script>
+        let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        let numbers = [...Array(10).keys()].map((n) => n + 1);
+        let displayValues = [];
+        let level = 1;
+        let displayType = "alphabet";
+
+        function handleLevel() {
+            level = parseInt(document.getElementById("level").value);
+            updateDisplay();
+        }
+
+        function handleDisplayType() {
+            displayType = document.getElementById("display-type").value;
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            generateDisplayValues();
+            createMissingValues();
+
+            const titleElement = document.getElementById("game-title");
+            titleElement.textContent =
+                displayType === "alphabet"
+                    ? "🌈 Let's Find the Missing Letter! ✨"
+                    : "🧩 Help Find the Missing Number! 🕵️‍♀️";
+        }
+
+        function validateInput(event, validateLetter, index) {
+            const currentInput = event?.target?.value?.toUpperCase();
+            if (!currentInput) return;
+            const letter = validateLetter?.textContent?.toUpperCase();
+            const letterOnlyPattern = /^[A-Za-z0-9]*$/;
+
+            displayValues[index] = "_";
+            if (currentInput.length <= 2 && letterOnlyPattern.test(currentInput)) {
+                if (currentInput == letter) {
+                    displayValues[index] = currentInput;
+                    validateLetter.classList.add("valid-letter");
+                    validateLetter.classList.remove("invalid-letter");
+
+                    document
+                        .querySelector(`#letter${index} .missing-letter`)
+                        .classList.remove("jump");
+                } else {
+                    validateLetter.classList.add("invalid-letter");
+                    validateLetter.classList.remove("valid-letter");
+                }
+            } else {
+                event.target.value = "";
+                validateLetter.classList.remove("valid-letter", "invalid-letter");
+            }
+
+            // all letters filled show confetti
+            if (!displayValues.includes("_")) {
+                handleCompletion();
+            }
+        }
+
+        function handleCompletion() {
+            if (navigator.onLine) {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                speak("Congratulations");
+                setTimeout(updateDisplay, 1000);
+            }
+        }
+
+        function speak(text) {
+            if ("speechSynthesis" in window) {
+                const synth = window.speechSynthesis;
+                if (synth.speaking || synth.pending) synth.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                synth.speak(utterance);
+            }
+        }
+
+        function createMissingValues() {
+            let checkRepeatIndexValue = [];
+            const usedIndices = new Set();
+            for (let i = 0; i < level; i++) {
+                let index;
+                do {
+                    index = Math.floor(Math.random() * displayValues.length);
+                } while (usedIndices.has(index));
+
+                usedIndices.add(index);
+
+                displayValues[index ?? 0] = "_";
+
+                const letterValue = document.getElementById(`letter${index}`);
+                letterValue.classList.remove("letter");
+                letterValue.style.visibility = "hidden";
+                letterValue.style.fontSize = "0";
+
+                const input = document.createElement("input");
+                input.type = "text";
+                input.classList.add("missing-letter", "jump");
+
+                input.onkeyup = (event) => validateInput(event, letterValue, index);
+                letterValue.appendChild(input);
+            }
+        }
+
+        function generateDisplayValues() {
+            document.getElementById("letters").innerHTML = "";
+            displayValues =
+                displayType === "alphabet" ? [...letters] : [...numbers];
+
+            displayValues.map((letter, index) => {
+                let elem = document.createElement("div");
+                elem.classList.add("letter");
+                elem.id = `letter${index}`;
+                elem.innerHTML = letter;
+                document.getElementById("letters").appendChild(elem);
+            });
+        }
+
+        updateDisplay(); // Initialize the display
+    </script>
+</body>
+
+</html>
