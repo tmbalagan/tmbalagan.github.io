@@ -130,7 +130,7 @@
             text-align: center;
             color: #007BFF;
             margin-bottom: 30px;
-            visibility: hidden;
+            display: none;
         }
 
         #timer {
@@ -372,7 +372,7 @@
 
             const countdown = setInterval(function () {
                 timerElement.textContent = timeLeft;
-                document.getElementById('timer-container').style.visibility = 'visible'
+                document.getElementById('timer-container').style.display = 'block'
 
                 if (timeLeft < 10) {
                     speak(timeLeft)
@@ -391,7 +391,7 @@
 
         function handleOverlay() {
             document.getElementById('overlay').style.display = 'none';
-            document.getElementById('timer-container').style.visibility = 'hidden'
+            document.getElementById('timer-container').style.display = 'none'
             document.getElementById('timer-value').value = ""
         }
 
