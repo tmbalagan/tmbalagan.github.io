@@ -1,17 +1,19 @@
 # 🕵️‍♂️ Find the Missing Value Game! 🔍✨
 
-Welcome to the **Find the Missing Value Game**! This fun and educational game is designed for Montessori students to enhance their skills in identifying and filling in missing letters and numbers.
+Welcome to the **Find the Missing Value Game**! This interactive and educational game is designed for Montessori students to enhance their skills in identifying and filling in missing letters and numbers.
 
 ## 🎮 Game Overview
 
-In this interactive game, players will find and fill in the missing letters or numbers. Once all the values are filled correctly, a joyful confetti celebration will ensue! 🎉
+In this exciting game, players will search for and fill in the missing letters or numbers. Once all missing values are filled, a fun confetti celebration will occur! 🎉
 
 ## 🎯 Features
 
-- **Montessori-Friendly**: Tailored for Montessori students to enhance learning through play.
-- **Find and Fill**: Players identify and fill in missing letters or numbers. 
-- **Dynamic Levels**: The game contains multiple levels, each with different challenges of missing letters to find.
-- **Visual Feedback**: 
-  - Correctly typed letters or numbers display a green background color. 
-  - Incorrect entries will show a red background color, helping students learn through immediate feedback.
-- **Engaging Animations**: Enjoy an initial jumping animation that highlights the letters to fill, making the game more engaging!
+- **Designed for Montessori Students**: Tailored to engage children in a playful learning experience.
+- **Find and Fill**: Search for the missing letters or numbers, and fill them in to complete the game.
+- **Celebratory Confetti**: Experience a joyful confetti animation once all values are filled correctly!
+- **Multiple Levels**: Progress through various levels, each containing different missing letters or numbers to find.
+- **Instant Feedback**: 
+  - Correctly typed letters or numbers will show a green background color. ✅
+  - Incorrect entries will highlight in red. ❌
+- **Jumping Animation**: Initially, letters to fill will have a little jump animation to help identify them.
+- **Timer Option**: Challenge yourself to see how quickly you can finish the game by using the timer option!
