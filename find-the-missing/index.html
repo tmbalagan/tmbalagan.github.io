@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>Find the Missing Letter or Number!</title>
     <meta charset="UTF-8">
@@ -228,7 +229,7 @@
             </div>
             <h2 id="game-title">🎯 Let's Find the Missing Letter or Number! 🔍</h2>
             <div class="overlay" id="overlay">
-                <button class="overlay-button" onclick="handleOverlay()">🔔 Time up, Restart 🔄</button>
+                <button class="overlay-button" onclick="handleClearOverlay()">🔔 Time up, Restart 🔄</button>
             </div>
             <div class="letters" id="letters"></div>
         </section>
@@ -269,6 +270,7 @@
         let displayValues = [];
         let level = 1;
         let displayType = "alphabet";
+        let countdown = 0
 
         function handleLevel() {
             level = parseInt(document.getElementById("level").value);
@@ -326,6 +328,7 @@
             if (navigator.onLine) {
                 confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
                 speak("Congratulations");
+                handleClearTimer()
                 setTimeout(updateDisplay, 1000);
             }
         }
@@ -385,7 +388,7 @@
             let timeLeft = document.getElementById('timer-value').value
             const timerElement = document.getElementById('timer');
 
-            const countdown = setInterval(function () {
+            countdown = setInterval(function () {
                 timerElement.textContent = timeLeft;
                 document.getElementById('timer-container').style.display = 'block'
 
@@ -404,10 +407,15 @@
             }, 1000);
         }
 
-        function handleOverlay() {
+        function handleClearOverlay() {
             document.getElementById('overlay').style.display = 'none';
             document.getElementById('timer-container').style.display = 'none'
             document.getElementById('timer-value').value = ""
+        }
+
+        function handleClearTimer() {
+            clearInterval(countdown)
+            handleClearOverlay()
         }
 
         updateDisplay(); // Initialize the display
