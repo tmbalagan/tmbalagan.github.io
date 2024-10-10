@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🚀 Jump Into Math! Fun Forward & Backward Steps Game for Kids</title>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🚀 Jump Into Math! Fun Forward & Backward Steps Game for Kids</title>
+    <meta
+      name="description"
+      content="Join us on a fun adventure with our interactive jumping steps game! Help Montessori students learn addition and subtraction by jumping forward and backward on the number line."
+    />
+    <meta
+      name="keywords"
+      content="Montessori, addition, subtraction, number line, math games, interactive learning, jumping steps, educational tools, kids math, forward and backward jumps"
+    />
+    <meta name="author" content="Balamurugan" />
+    <meta name="robots" content="index, follow" />
+    <meta
+      property="og:title"
+      content="🚀 Jump Into Math! Fun Forward & Backward Steps Game for Kids"
+    />
+    <meta
+      property="og:description"
+      content="Join us on a fun adventure with our interactive jumping steps game! Help Montessori students learn addition and subtraction by jumping forward and backward on the number line."
+    />
+    <meta property="og:url" content="URL_of_the_game_page" />
+    <meta property="og:type" content="website" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Roboto Mono", monospace;
+        margin: 0 auto;
+        margin-top: 50px;
+        max-width: 1200px;
+        padding: 20px;
+      }
+
+      .walking-path {
+        display: grid;
+        grid-template-columns: repeat(5, 60px);
+        justify-content: center;
+        gap: 40px;
+        margin: 20px;
+      }
+
+      .number,
+      .number-input {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: lightblue;
+        border: 2px solid #000;
+        border-radius: 50%;
+        font-weight: bold;
+        position: relative;
+        visibility: hidden;
+        text-align: center;
+      }
+
+      .number-input {
+        visibility: visible;
+        font-size: 20px;
+        cursor: not-allowed;
+        transition: transform 0.5s ease;
+      }
+
+      .forward > .number-input {
+        background-color: skyblue;
+      }
+
+      .backward > .number-input {
+        background-color: pink;
+      }
+
+      .jumping-animation {
+        animation: jump 2s ease-in-out infinite;
+        box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      @keyframes jump {
+        0% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(-3px);
+        }
+
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      /* Arrow styles */
+      .number.forward::before {
+        content: "→";
+        position: absolute;
+        bottom: 50px;
+        font-size: 60px;
+        visibility: visible;
+      }
+
+      .number.backward::before {
+        content: "←";
+        position: absolute;
+        bottom: 50px;
+        font-size: 60px;
+        visibility: visible;
+      }
+
+      .number:nth-child(6)::before,
+      .number:nth-child(7)::before,
+      .number:nth-child(8)::before,
+      .number:nth-child(9)::before,
+      .number:nth-child(10)::before,
+      .number:nth-child(16)::before,
+      .number:nth-child(17)::before,
+      .number:nth-child(18)::before,
+      .number:nth-child(19)::before,
+      .number:nth-child(20)::before {
+        content: "←";
+      }
+
+      /* .number:nth-child(16)::before,
+      .number:nth-child(17)::before,
+      .number:nth-child(18)::before,
+      .number:nth-child(19)::before,
+      .number:nth-child(20)::before {
+        content: "←";
+      } */
+
+      .number.backward:nth-child(6)::before,
+      .number.backward:nth-child(7)::before,
+      .number.backward:nth-child(8)::before,
+      .number.backward:nth-child(9)::before,
+      .number.backward:nth-child(10)::before,
+      .number.backward:nth-child(16)::before,
+      .number.backward:nth-child(17)::before,
+      .number.backward:nth-child(18)::before,
+      .number.backward:nth-child(19)::before,
+      .number.backward:nth-child(20)::before {
+        content: "←";
+        bottom: 30px;
+        transform: rotate(180deg);
+      }
+
+      /* .number.backward:nth-child(16)::before,
+      .number.backward:nth-child(17)::before,
+      .number.backward:nth-child(18)::before,
+      .number.backward:nth-child(19)::before,
+      .number.backward:nth-child(20)::before {
+        content: "←";
+        bottom: 30px;
+        transform: rotate(180deg);
+      } */
+
+      .number.forward:nth-child(10n + 5)::before,
+      .number.backward:nth-child(10n + 5)::before {
+        left: 70px;
+        transform: rotate(90deg);
+        bottom: 0;
+      }
+
+      /* .number.backward:nth-child(10n + 5)::before {
+        left: 70px;
+        transform: rotate(90deg);
+        bottom: 0;
+      } */
+
+      .number.forward:nth-child(10n + 6)::before {
+        transform: rotate(270deg);
+        right: 90px;
+        top: 50%;
+      }
+
+      .number.backward:nth-child(10n + 6)::before {
+        transform: rotate(90deg);
+        top: 50%;
+      }
+
+      .number:nth-child(6) > .child-jump.forward,
+      .number:nth-child(7) > .child-jump.forward,
+      .number:nth-child(8) > .child-jump.forward,
+      .number:nth-child(9) > .child-jump.forward,
+      .number:nth-child(10) > .child-jump.forward,
+      .number:nth-child(16) > .child-jump.forward,
+      .number:nth-child(17) > .child-jump.forward,
+      .number:nth-child(18) > .child-jump.forward,
+      .number:nth-child(19) > .child-jump.forward,
+      .number:nth-child(20) > .child-jump.forward {
+        transform: scaleX(-1) !important;
+        transition: transform 1s;
+      }
+
+      .number:nth-child(5) > .child-jump.backward,
+      .number:nth-child(4) > .child-jump.backward,
+      .number:nth-child(3) > .child-jump.backward,
+      .number:nth-child(2) > .child-jump.backward,
+      .number:nth-child(1) > .child-jump.backward,
+      .number:nth-child(15) > .child-jump.backward,
+      .number:nth-child(14) > .child-jump.backward,
+      .number:nth-child(13) > .child-jump.backward,
+      .number:nth-child(12) > .child-jump.backward,
+      .number:nth-child(11) > .child-jump.backward {
+        transform: scaleX(-1) !important;
+        transition: transform 1s;
+      }
+
+      /* .number:nth-child(15) > .child-jump.backward,
+      .number:nth-child(14) > .child-jump.backward,
+      .number:nth-child(13) > .child-jump.backward,
+      .number:nth-child(12) > .child-jump.backward,
+      .number:nth-child(11) > .child-jump.backward {
+        transform: scaleX(-1) !important;
+        transition: transform 1s;
+      } */
+
+      .arrow-remove::before {
+        content: "" !important;
+      }
+
+      .start-position > .home {
+        visibility: visible;
+        font-size: 50px;
+      }
+
+      .start-position,
+      .end-position {
+        right: 30px;
+      }
+
+      .start-position .child-jump {
+        left: 85%;
+      }
+
+      .end-position > .home {
+        visibility: visible;
+        font-size: 50px;
+      }
+
+      .number-end::before {
+        content: "" !important;
+      }
+
+      .child-jump {
+        width: 20px;
+        height: 20px;
+        display: block;
+        visibility: visible;
+        position: absolute;
+        border-radius: 10px;
+        left: 40%;
+        top: 11px;
+        font-size: 30px;
+        animation: jump 1s ease-in-out infinite;
+      }
+
+      .group-buttons {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin: 30px 0;
+        justify-content: center;
+      }
+
+      .action-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .action-buttons > button {
+        padding: 10px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .header-wrap {
+        margin: 0 auto;
+        max-width: 700px;
+        padding-bottom: 40px;
+      }
+
+      h2 {
+        text-align: center;
+        font-size: 18px;
+      }
+
+      .select-dropdown {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+      }
+
+      select {
+        height: 30px;
+        border-radius: 4px;
+        background-color: #fff;
+      }
+
+      @media (max-width: 600px) {
+        h2 {
+          font-size: 16px;
+        }
+
+        .walking-path {
+          gap: 15px;
+          margin: 0;
+        }
+
+        .number,
+        .number-input {
+          width: 40px;
+          height: 40px;
+        }
+
+        .number.forward::before {
+          font-size: 30px;
+          bottom: 30px;
+          left: 20px;
+        }
+
+        .number.backward::before {
+          font-size: 30px;
+          bottom: 26px !important;
+          left: 20px;
+        }
+
+        .number.forward:nth-child(10n + 5)::before,
+        .number.backward:nth-child(10n + 5)::before {
+          left: 50px;
+        }
+
+        .number.backward:nth-child(10n + 5)::before {
+          bottom: 0;
+        }
+
+        .number.forward:nth-child(10n + 6)::before {
+          right: 60px;
+          left: -23px;
+          top: 30px;
+        }
+
+        .number.backward:nth-child(10n + 6)::before {
+          right: 60px;
+          top: 30px;
+        }
+
+        .start-position > .home,
+        .end-position > .home {
+          font-size: 20px;
+        }
+
+        .start-position,
+        .end-position {
+          right: 8px;
+        }
+
+        .child-jump {
+          font-size: 23px;
+          top: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="header-wrap">
+      <h2>🐾 Follow the Number Path: Forward & Backward Jumps</h2>
+      <div class="select-dropdown">
+        <label>Choose Your Friend</label>
+        <select id="friend" onchange="handleSelect()">
+          <option value="girl">Girl</option>
+          <option value="boy">Boy</option>
+        </select>
+      </div>
+    </div>
+    <div class="walking-path">
+      <div class="number start-position" id="number1">
+        1
+        <span class="home" id="home">🏡</span>
+        <input type="text" class="number-input" value="1" disabled />
+      </div>
+      <div class="number" id="number2">
+        2
+        <input type="text" class="number-input" disabled />
+      </div>
+      <div class="number" id="number3">
+        3
+        <input type="text" class="number-input" disabled />
+      </div>
+      <div class="number" id="number4">
+        4
+        <input type="text" class="number-input" disabled />
+      </div>
+      <div class="number" id="number5">
+        5
+        <input type="text" class="number-input" disabled />
+      </div>
+
+      <div class="number" id="number10">
+        10
+        <input type="text" class="number-input" disabled />
+      </div>
+      <div class="number" id="number9">
+        9
+        <input type="text" class="number-input" disabled />
+      </div>
+      <div class="number" id="number8">
+        8
+        <input type="text" class="number-input" disabled />
+      </div>
+      <div class="number" id="number7">
+        7
+        <input type="text" class="number-input" disabled />
+      </div>
+      <div class="number" id="number6">
+        6
+        <input type="text" class="number-input" disabled />
+      </div>
+
+      <div class="number" id="number11">
+        11
+        <input type="text" class="number-input" disabled />
+      </div>
+      <div class="number" id="number12">
+        12
+        <input type="text" class="number-input" disabled />
+      </div>
+      <div class="number" id="number13">
+        13
+        <input type="text" class="number-input" disabled />
+      </div>
+      <div class="number" id="number14">
+        14
+        <input type="text" class="number-input" disabled />
+      </div>
+      <div class="number" id="number15">
+        15
+        <input type="text" class="number-input" disabled />
+      </div>
+
+      <div class="number arrow-remove end-position" id="number20">
+        20
+        <span class="home" id="home">🏫</span>
+        <input type="text" class="number-input" value="20" disabled />
+      </div>
+      <div class="number" id="number19">
+        19
+        <input type="text" class="number-input" disabled />
+      </div>
+      <div class="number" id="number18">
+        18
+        <input type="text" class="number-input" disabled />
+      </div>
+      <div class="number" id="number17">
+        17
+        <input type="text" class="number-input" disabled />
+      </div>
+      <div class="number" id="number16">
+        16
+        <input type="text" class="number-input" disabled />
+      </div>
+    </div>
+
+    <div class="group-buttons">
+      <div class="action-buttons">
+        <button class="forward" id="forward" onclick="jumpForward(1)">
+          Forward (+1) step ➡️
+        </button>
+        <button class="forward" id="forward" onclick="jumpForward(3)">
+          Forward (+3) steps ➡️
+        </button>
+      </div>
+      <div class="action-buttons">
+        <button class="backward" id="backward" onclick="jumpBackward(2)">
+          Backward (-2) steps ⬅️
+        </button>
+        <button class="backward" id="backward" onclick="jumpBackward(3)">
+          Backward (-3) steps ⬅️
+        </button>
+      </div>
+      <div class="action-buttons">
+        <button class="forward" id="forward" onclick="jumpRandomNumber()">
+          Forward random steps
+        </button>
+      </div>
+    </div>
+
+    <audio id="foot-steps" src="foot-steps.mp3"></audio>
+    <script>
+      const forwardBtns = document.querySelectorAll(".forward");
+      const backWardBtns = document.querySelectorAll(".backward");
+
+      let currentPosition = 0;
+      let previousPosition = 0;
+      let totalSteps = document.querySelectorAll(".number").length;
+      let position = document.getElementById(`number${currentPosition}`);
+      let isJumpForwardClicked = false;
+
+      let selectFriend = {
+        // default girl
+        school: "👩‍🏫",
+        default: "🚶‍♀️‍➡️",
+        home: "💃",
+      };
+
+      if (!document.querySelector(".number.forward")) {
+        document.querySelectorAll(".number").forEach(function (element) {
+          element.classList.add("forward");
+        });
+      }
+
+      function jumpForward(steps) {
+        // speak(`Jump Forward ${steps} steps`)
+
+        console.log("jumpForward::: ", selectFriend);
+
+        isJumpForwardClicked = true;
+        if (currentPosition > totalSteps)
+          return alert("I'm already school 🏫, jump backward to home");
+
+        position = document.getElementById(`number${currentPosition}`);
+        const spanElem = position?.querySelector(".child-jump");
+
+        // forward to change backward remove previous .child-jump element
+        if (position?.contains(spanElem)) {
+          position.removeChild(spanElem);
+        }
+
+        if (!document.querySelector(".number.forward")) {
+          document.querySelectorAll(".number").forEach(function (element) {
+            element.classList.add("forward");
+            element.classList.remove("backward");
+          });
+        }
+
+        currentPosition += steps;
+        previousPosition = currentPosition - steps;
+
+        if (previousPosition < 1) {
+          previousPosition = 1;
+        }
+        if (currentPosition > totalSteps) {
+          currentPosition = totalSteps;
+        }
+
+        updateForwardSteps();
+      }
+
+      async function updateForwardSteps() {
+        position = document.getElementById(`number${currentPosition}`);
+
+        disableActionButtons();
+        const childJumpElem = document.createElement("span");
+
+        for (let i = previousPosition; i <= currentPosition; i++) {
+          childJumpElem.classList.remove("backward");
+          childJumpElem.classList.add("child-jump", "forward");
+          childJumpElem.textContent = selectFriend.default;
+
+          const position = document.getElementById(`number${i}`);
+          position?.appendChild(childJumpElem);
+
+          position
+            .querySelector(`#number${i} .number-input`)
+            ?.classList.add("jumping-animation");
+
+          await delay(500); // Wait for 500 milliseconds before continuing
+
+          //  last child to keep dot
+          if (currentPosition != i) {
+            // below check a again, same thing doing here --- (position.removeChild(spanElem))
+            // position?.removeChild(position.querySelector(".child-jump"));
+            position
+              ?.querySelector(`#number${i} .number-input`)
+              ?.classList.remove("jumping-animation");
+          }
+
+          footStepsEffect(currentPosition == i);
+        }
+
+        if (currentPosition === totalSteps) {
+          childJumpElem.textContent = selectFriend.school;
+
+          if (navigator.onLine) {
+            confetti({
+              particleCount: 100,
+              spread: 70,
+              origin: { y: 0.6 },
+            });
+          }
+
+          setTimeout(() => {
+            childJumpElem.textContent = "";
+          }, 500);
+
+          //  set eg: 21 (currently we have 20 steps) because school consider as new place
+          currentPosition = totalSteps + 1;
+        }
+
+        enableActionButtons();
+      }
+
+      function jumpBackward(steps) {
+        // speak(`Jump Backward ${steps} steps`)
+        if (!isJumpForwardClicked || currentPosition === 0)
+          return alert("I'm already home 🏡, jump forward to school");
+        position = document.getElementById(`number${currentPosition}`);
+
+        const spanElem = position?.querySelector(".child-jump");
+        if (position?.contains(spanElem)) {
+          position.removeChild(spanElem);
+        }
+
+        if (!document.querySelector(".number.backward")) {
+          document.querySelectorAll(".number").forEach(function (element) {
+            element.classList.remove("forward");
+            element.classList.add("backward");
+          });
+        }
+
+        previousPosition = currentPosition;
+        currentPosition -= steps;
+        if (currentPosition < 0) currentPosition = 0; // Set 0 as the home position
+
+        updatebackwardSteps();
+      }
+
+      async function updatebackwardSteps() {
+        position = document.getElementById(`number${currentPosition}`);
+
+        disableActionButtons();
+
+        const childJumpElem = document.createElement("span");
+
+        for (let i = previousPosition; i >= currentPosition; i--) {
+          childJumpElem.classList.remove("forward");
+          childJumpElem.classList.add("child-jump", "backward");
+          childJumpElem.textContent = selectFriend.default;
+
+          const position = document.getElementById(`number${i}`);
+          position?.appendChild(childJumpElem);
+
+          position
+            ?.querySelector(`#number${i} .number-input`)
+            ?.classList.add("jumping-animation");
+
+          await delay(500); // Wait for 500 milliseconds before continuing
+
+          //  last child to keep dot
+          if (currentPosition != i) {
+            position
+              ?.querySelector(`#number${i} .number-input`)
+              ?.classList.remove("jumping-animation");
+          }
+
+          footStepsEffect(currentPosition == i);
+        }
+
+        if (currentPosition === 0) {
+          childJumpElem.textContent = selectFriend.home;
+          currentPosition = 0;
+
+          if (navigator.onLine) {
+            confetti({
+              particleCount: 100,
+              spread: 70,
+              origin: { y: 0.6 },
+            });
+          }
+
+          setTimeout(() => {
+            childJumpElem.textContent = "";
+          }, 500);
+        }
+
+        enableActionButtons();
+      }
+
+      function jumpRandomNumber() {
+        // set random from 1 to 10
+        const randomNumber = Math.floor(Math.random() * 10) + 1;
+
+        jumpForward(randomNumber);
+      }
+
+      function disableActionButtons() {
+        forwardBtns.forEach((element) => {
+          element.disabled = true;
+        });
+
+        backWardBtns.forEach((element) => {
+          element.disabled = true;
+        });
+      }
+
+      function enableActionButtons() {
+        forwardBtns.forEach((element) => {
+          element.disabled = false;
+        });
+
+        backWardBtns.forEach((element) => {
+          element.disabled = false;
+        });
+      }
+
+      function speak(text) {
+        if ("speechSynthesis" in window) {
+          const synth = window.speechSynthesis;
+          if (synth.speaking || synth.pending) synth.cancel();
+          const utterance = new SpeechSynthesisUtterance(text);
+          synth.speak(utterance);
+        }
+      }
+
+      function delay(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
+
+      function footStepsEffect(isPause) {
+        const stepsSound = document.getElementById("foot-steps");
+        const startTime = 2; //seconds
+        const endTime = 2;
+
+        stepsSound.currentTime = startTime; // Reset sound to start
+
+        stepsSound.addEventListener("timeupdate", function () {
+          if (stepsSound.currentTime >= endTime) {
+            stepsSound.pause();
+          }
+        });
+
+        if (!isPause) {
+          stepsSound.currentTime = 0;
+        }
+
+        stepsSound.play(); // Play the sound
+      }
+
+      function handleSelect() {
+        const friend = document.getElementById("friend").value;
+
+        console.log("friend::: ", friend);
+
+        if (friend == "boy") {
+          selectFriend = {
+            school: "👨‍🏫",
+            default: "🚶‍➡️",
+            home: "🕺",
+          };
+        } else {
+          selectFriend = {
+            school: "👩‍🏫",
+            default: "🚶‍♀️‍➡️",
+            home: "💃",
+          };
+        }
+      }
+    </script>
+  </body>
+</html>
