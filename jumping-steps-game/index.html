@@ -281,7 +281,7 @@
           childJumpElem.classList.add("child-jump", "forward");
           childJumpElem.textContent = selectFriend.default;
 
-          const position = document.getElementById(`number${i}`);
+          position = document.getElementById(`number${i}`);
           position?.appendChild(childJumpElem);
 
           position
@@ -312,7 +312,8 @@
           }
 
           setTimeout(() => {
-            childJumpElem.textContent = "";
+            //  The endpoint is school at position 20, so when the position reaches 20, we directly remove the child jump element.
+            position?.removeChild(childJumpElem)
           }, 500);
 
           //  set eg: 21 (currently we have 20 steps) because school consider as new place
@@ -368,7 +369,6 @@
 
           await delay(500); // Wait for 500 milliseconds before continuing
 
-          //  last child to keep dot
           if (currentPosition != i) {
             position
               ?.querySelector(`#number${i} .number-input`)
@@ -380,7 +380,6 @@
 
         if (currentPosition === 0) {
           childJumpElem.textContent = selectFriend.home;
-          currentPosition = 0;
 
           if (navigator.onLine) {
             confetti({
@@ -391,7 +390,8 @@
           }
 
           setTimeout(() => {
-            childJumpElem.textContent = "";
+            // The starting point is home at position 0. When the position reaches 0, we manually remove (number1) the jump element.
+            document.getElementById(`number1`)?.removeChild(childJumpElem)
           }, 500);
         }
 
