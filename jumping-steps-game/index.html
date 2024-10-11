@@ -212,7 +212,7 @@
 
       question.innerHTML =
         jumpBasedQuestions[
-        Math.floor(Math.random() * jumpBasedQuestions.length)
+          Math.floor(Math.random() * jumpBasedQuestions.length)
         ];
 
       let selectFriend = {
@@ -284,7 +284,6 @@
           await delay(500); // Wait for 500 milliseconds before continuing
 
           if (currentPosition != i) {
-            // Instead of removing the last child, remove all previous jumps.
             position?.removeChild(position.querySelector(".child-jump"));
             position
               ?.querySelector(`#number${i} .number-input`)
@@ -395,6 +394,7 @@
       function jumpRandomNumber() {
         // set random from 1 to 10
         const randomNumber = Math.floor(Math.random() * 10) + 1;
+
         jumpForward(randomNumber);
       }
 
@@ -467,9 +467,8 @@
             home: "💃",
           };
         }
-
         position = document.getElementById(`number${currentPosition}`);
-        const span = position.querySelector("span");
+        const span = position.querySelector("span.child-jump");
         if (span) {
           span.textContent = selectFriend.default;
         }
@@ -482,7 +481,7 @@
           speak("Great job! You got it!");
           question.innerHTML =
             jumpBasedQuestions[
-            Math.floor(Math.random() * jumpBasedQuestions.length)
+              Math.floor(Math.random() * jumpBasedQuestions.length)
             ];
         } else {
           speak("Hmm, not quite! Can you try again?");
