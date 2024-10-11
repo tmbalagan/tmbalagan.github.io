@@ -343,6 +343,7 @@
 
         previousPosition = currentPosition;
         currentPosition -= steps;
+        // Always start jumps at step 1, with home set to 0.
         if (currentPosition < 0) currentPosition = 0; // Set 0 as the home position
 
         updatebackwardSteps();
