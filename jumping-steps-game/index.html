@@ -212,7 +212,7 @@
 
       question.innerHTML =
         jumpBasedQuestions[
-          Math.floor(Math.random() * jumpBasedQuestions.length)
+        Math.floor(Math.random() * jumpBasedQuestions.length)
         ];
 
       let selectFriend = {
@@ -230,8 +230,6 @@
 
       function jumpForward(steps) {
         // speak(`Jump Forward ${steps} steps`)
-
-        console.log("jumpForward::: ", selectFriend);
 
         isJumpForwardClicked = true;
         if (currentPosition > totalSteps)
@@ -285,10 +283,9 @@
 
           await delay(500); // Wait for 500 milliseconds before continuing
 
-          //  last child to keep dot
           if (currentPosition != i) {
-            // below check a again, same thing doing here --- (position.removeChild(spanElem))
-            // position?.removeChild(position.querySelector(".child-jump"));
+            // Instead of removing the last child, remove all previous jumps.
+            position?.removeChild(position.querySelector(".child-jump"));
             position
               ?.querySelector(`#number${i} .number-input`)
               ?.classList.remove("jumping-animation");
@@ -398,7 +395,6 @@
       function jumpRandomNumber() {
         // set random from 1 to 10
         const randomNumber = Math.floor(Math.random() * 10) + 1;
-
         jumpForward(randomNumber);
       }
 
@@ -482,12 +478,11 @@
       function validateSteps() {
         const step = parseInt(document.getElementById("stepsValue").value);
 
-        console.log(step, currentPosition);
         if (step == currentPosition) {
           speak("Great job! You got it!");
           question.innerHTML =
             jumpBasedQuestions[
-              Math.floor(Math.random() * jumpBasedQuestions.length)
+            Math.floor(Math.random() * jumpBasedQuestions.length)
             ];
         } else {
           speak("Hmm, not quite! Can you try again?");
