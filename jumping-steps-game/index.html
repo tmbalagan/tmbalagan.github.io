@@ -39,7 +39,7 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <style>
-      *{box-sizing:border-box;margin:0;padding:0}body{font-family:"Roboto Mono",monospace;margin:0 auto;max-width:1200px;padding:20px}.walking-path{display:grid;grid-template-columns:repeat(5,60px);justify-content:center;gap:40px;margin:20px}.number,.number-input{width:60px;height:60px;display:flex;align-items:center;justify-content:center;background-color:lightblue;border:2px solid #000;border-radius:50%;font-weight:700;position:relative;visibility:hidden;text-align:center}.number-input{visibility:visible;font-size:20px;cursor:not-allowed;transition:transform 0.5s ease}.forward>.number-input{background-color:skyblue}.backward>.number-input{background-color:pink}.jumping-animation{animation:jump 2s ease-in-out infinite;box-shadow:0 5px 15px rgb(0 0 0 / .2)}@keyframes jump{0%{transform:translateY(0)}50%{transform:translateY(-3px)}100%{transform:translateY(0)}}.number.forward::before{content:"→";position:absolute;bottom:50px;font-size:50px;visibility:visible}.number.backward::before{content:"←";position:absolute;bottom:50px;font-size:60px;visibility:visible}.number:nth-child(6)::before,.number:nth-child(7)::before,.number:nth-child(8)::before,.number:nth-child(9)::before,.number:nth-child(10)::before,.number:nth-child(16)::before,.number:nth-child(17)::before,.number:nth-child(18)::before,.number:nth-child(19)::before,.number:nth-child(20)::before{content:"←"}.number.backward:nth-child(6)::before,.number.backward:nth-child(7)::before,.number.backward:nth-child(8)::before,.number.backward:nth-child(9)::before,.number.backward:nth-child(10)::before,.number.backward:nth-child(16)::before,.number.backward:nth-child(17)::before,.number.backward:nth-child(18)::before,.number.backward:nth-child(19)::before,.number.backward:nth-child(20)::before{content:"←";bottom:30px;transform:rotate(180deg)}.number.forward:nth-child(10n+5)::before,.number.backward:nth-child(10n+5)::before{left:70px;transform:rotate(90deg);bottom:0}.number.forward:nth-child(10n+6)::before{transform:rotate(270deg);right:90px;top:50%}.number.backward:nth-child(10n+6)::before{transform:rotate(90deg);top:50%}.number:nth-child(6)>.child-jump.forward,.number:nth-child(7)>.child-jump.forward,.number:nth-child(8)>.child-jump.forward,.number:nth-child(9)>.child-jump.forward,.number:nth-child(10)>.child-jump.forward,.number:nth-child(16)>.child-jump.forward,.number:nth-child(17)>.child-jump.forward,.number:nth-child(18)>.child-jump.forward,.number:nth-child(19)>.child-jump.forward,.number:nth-child(20)>.child-jump.forward{transform:scaleX(-1)!important;transition:transform 1s}.number:nth-child(5)>.child-jump.backward,.number:nth-child(4)>.child-jump.backward,.number:nth-child(3)>.child-jump.backward,.number:nth-child(2)>.child-jump.backward,.number:nth-child(1)>.child-jump.backward,.number:nth-child(15)>.child-jump.backward,.number:nth-child(14)>.child-jump.backward,.number:nth-child(13)>.child-jump.backward,.number:nth-child(12)>.child-jump.backward,.number:nth-child(11)>.child-jump.backward{transform:scaleX(-1)!important;transition:transform 1s}.arrow-remove::before{content:""!important}.start-position>.home{visibility:visible;font-size:50px}.start-position,.end-position{right:30px}.start-position .child-jump{left:85%}.end-position>.home{visibility:visible;font-size:50px}.number-end::before{content:""!important}.child-jump{width:20px;height:20px;display:block;visibility:visible;position:absolute;border-radius:10px;left:40%;top:11px;font-size:30px;animation:jump 1s ease-in-out infinite}.group-buttons{grid-column:span 3;display:flex;flex-direction:column;align-items:center}.action-buttons{margin-top:20px}.action-buttons>button{padding:5px;border-radius:8px;border:none;cursor:pointer}.header-wrap{margin:0 auto;max-width:700px;padding-bottom:40px}h2{text-align:center;font-size:18px}.top-section{margin-top:20px;display:flex;gap:10px;flex-direction:column;align-items:center}select{height:30px;border-radius:4px;background-color:#fff}.question{margin-bottom:10px;max-width:600px}.question+input{height:20px;border-radius:4px}.main{display:grid;grid-template-columns:repeat(8,1fr);gap:10px}.main-content{grid-column:span 4;display:flex;flex-direction:column;align-items:center}.github-link{margin:20px 0}@media (max-width:1024px){.main{grid-template-columns:1fr;gap:0}}@media (max-width:600px){h2{font-size:16px}.walking-path{gap:15px;margin:0}.number,.number-input{width:40px;height:40px}.number.forward::before{font-size:30px;bottom:30px;left:20px}.number.backward::before{font-size:30px;bottom:26px!important;left:20px}.number.forward:nth-child(10n+5)::before,.number.backward:nth-child(10n+5)::before{left:50px}.number.backward:nth-child(10n+5)::before{bottom:0}.number.forward:nth-child(10n+6)::before{right:60px;left:-23px;top:30px}.number.backward:nth-child(10n+6)::before{right:60px;top:30px}.start-position>.home,.end-position>.home{font-size:20px}.start-position,.end-position{right:8px}.child-jump{font-size:23px;top:0}}
+      *{box-sizing:border-box;margin:0;padding:0}body{font-family:"Roboto Mono",monospace;margin:0 auto;max-width:1200px;padding:20px}.walking-path{display:grid;grid-template-columns:repeat(5,60px);justify-content:center;gap:40px;margin:20px}.number,.number-input{width:60px;height:60px;display:flex;align-items:center;justify-content:center;background-color:lightblue;border:2px solid #000;border-radius:50%;font-weight:700;position:relative;visibility:hidden;text-align:center}.number-input{visibility:visible;font-size:20px;cursor:not-allowed;transition:transform 0.5s ease}.forward>.number-input{background-color:skyblue}.backward>.number-input{background-color:pink}.jumping-animation{animation:jump 2s ease-in-out infinite;box-shadow:0 5px 15px rgb(0 0 0 / .2)}@keyframes jump{0%{transform:translateY(0)}50%{transform:translateY(-3px)}100%{transform:translateY(0)}}.number.forward::before{content:"→";position:absolute;bottom:50px;font-size:50px;visibility:visible}.number.backward::before{content:"←";position:absolute;bottom:50px;font-size:60px;visibility:visible}.number:nth-child(6)::before,.number:nth-child(7)::before,.number:nth-child(8)::before,.number:nth-child(9)::before,.number:nth-child(10)::before,.number:nth-child(16)::before,.number:nth-child(17)::before,.number:nth-child(18)::before,.number:nth-child(19)::before,.number:nth-child(20)::before{content:"←"}.number.backward:nth-child(6)::before,.number.backward:nth-child(7)::before,.number.backward:nth-child(8)::before,.number.backward:nth-child(9)::before,.number.backward:nth-child(10)::before,.number.backward:nth-child(16)::before,.number.backward:nth-child(17)::before,.number.backward:nth-child(18)::before,.number.backward:nth-child(19)::before,.number.backward:nth-child(20)::before{content:"←";bottom:30px;transform:rotate(180deg)}.number.forward:nth-child(10n+5)::before,.number.backward:nth-child(10n+5)::before{left:70px;transform:rotate(90deg);bottom:0}.number.forward:nth-child(10n+6)::before{transform:rotate(270deg);right:90px;top:50%}.number.backward:nth-child(10n+6)::before{transform:rotate(90deg);top:50%}.number:nth-child(6)>.child-jump.forward,.number:nth-child(7)>.child-jump.forward,.number:nth-child(8)>.child-jump.forward,.number:nth-child(9)>.child-jump.forward,.number:nth-child(10)>.child-jump.forward,.number:nth-child(16)>.child-jump.forward,.number:nth-child(17)>.child-jump.forward,.number:nth-child(18)>.child-jump.forward,.number:nth-child(19)>.child-jump.forward,.number:nth-child(20)>.child-jump.forward{transform:scaleX(-1)!important;transition:transform 1s}.number:nth-child(5)>.child-jump.backward,.number:nth-child(4)>.child-jump.backward,.number:nth-child(3)>.child-jump.backward,.number:nth-child(2)>.child-jump.backward,.number:nth-child(1)>.child-jump.backward,.number:nth-child(15)>.child-jump.backward,.number:nth-child(14)>.child-jump.backward,.number:nth-child(13)>.child-jump.backward,.number:nth-child(12)>.child-jump.backward,.number:nth-child(11)>.child-jump.backward{transform:scaleX(-1)!important;transition:transform 1s}.arrow-remove::before{content:""!important}.start-position>.home{visibility:visible;font-size:50px}.start-position,.end-position{right:30px}.start-position .child-jump{left:85%}.end-position>.home{visibility:visible;font-size:50px}.number-end::before{content:""!important}.child-jump{width:20px;height:20px;display:block;visibility:visible;position:absolute;border-radius:10px;left:40%;top:11px;font-size:30px;animation:jump 1s ease-in-out infinite}.group-buttons{grid-column:span 3;display:flex;flex-direction:column;align-items:center}.action-buttons{margin-top:20px}.action-buttons>button{padding:5px;border-radius:8px;border:none;cursor:pointer}.header-wrap{margin:0 auto;max-width:700px;padding-bottom:40px}h2{text-align:center;font-size:18px}.top-section{margin-top:20px;display:flex;gap:10px;flex-direction:column;align-items:center}select{height:30px;border-radius:4px;background-color:#fff}.question{margin-bottom:10px;max-width:600px}.question+input{height:24px;border-radius:4px;padding:2px}#validate-quiz{padding:2px}.main{display:grid;grid-template-columns:repeat(8,1fr);gap:10px}.main-content{grid-column:span 4;display:flex;flex-direction:column;align-items:center}.github-link{margin:20px 0}.quiz{padding:10px;border:1px solid grey;border-radius:4px}@media (max-width:1024px){.main{grid-template-columns:1fr;gap:0}}@media (max-width:600px){h2{font-size:16px}.walking-path{gap:15px;margin:0}.number,.number-input{width:40px;height:40px}.number.forward::before{font-size:30px;bottom:30px;left:20px}.number.backward::before{font-size:30px;bottom:26px!important;left:20px}.number.forward:nth-child(10n+5)::before,.number.backward:nth-child(10n+5)::before{left:50px}.number.backward:nth-child(10n+5)::before{bottom:0}.number.forward:nth-child(10n+6)::before{right:60px;left:-23px;top:30px}.number.backward:nth-child(10n+6)::before{right:60px;top:30px}.start-position>.home,.end-position>.home{font-size:20px}.start-position,.end-position{right:8px}.child-jump{font-size:23px;top:0}}
     </style>
   </head>
 
@@ -273,7 +273,7 @@
       async function updateForwardSteps() {
         position = document.getElementById(`number${currentPosition}`);
 
-        disableActionButtons();
+        toggleEnableDisable(true);
         const childJumpElem = document.createElement("span");
 
         for (let i = previousPosition; i <= currentPosition; i++) {
@@ -313,14 +313,14 @@
 
           setTimeout(() => {
             //  The endpoint is school at position 20, so when the position reaches 20, we directly remove the child jump element.
-            position?.removeChild(childJumpElem)
+            position?.removeChild(childJumpElem);
           }, 500);
 
           //  set eg: 21 (currently we have 20 steps) because school consider as new place
           currentPosition = totalSteps + 1;
         }
 
-        enableActionButtons();
+        toggleEnableDisable(false);
       }
 
       function jumpBackward(steps) {
@@ -352,7 +352,7 @@
       async function updatebackwardSteps() {
         position = document.getElementById(`number${currentPosition}`);
 
-        disableActionButtons();
+        toggleEnableDisable(true);
 
         const childJumpElem = document.createElement("span");
 
@@ -392,11 +392,11 @@
 
           setTimeout(() => {
             // The starting point is home at position 0. When the position reaches 0, we manually remove (number1) the jump element.
-            document.getElementById(`number1`)?.removeChild(childJumpElem)
+            document.getElementById(`number1`)?.removeChild(childJumpElem);
           }, 500);
         }
 
-        enableActionButtons();
+        toggleEnableDisable(false);
       }
 
       function jumpRandomNumber() {
@@ -406,23 +406,13 @@
         jumpForward(randomNumber);
       }
 
-      function disableActionButtons() {
+      function toggleEnableDisable(boolean = true) {
         forwardBtns.forEach((element) => {
-          element.disabled = true;
+          element.disabled = boolean;
         });
 
         backWardBtns.forEach((element) => {
-          element.disabled = true;
-        });
-      }
-
-      function enableActionButtons() {
-        forwardBtns.forEach((element) => {
-          element.disabled = false;
-        });
-
-        backWardBtns.forEach((element) => {
-          element.disabled = false;
+          element.disabled = boolean;
         });
       }
 
