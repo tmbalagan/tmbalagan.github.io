@@ -654,8 +654,12 @@
 
       // Reset functionality
       document.getElementById("reset-button").addEventListener("click", () => {
-        remainingApples = 0;
+        remainingApples = totalFruits;
         eatenApplesCount = 0;
+        // Reinitialize the required fruits value.
+        requiredFruits = Math.floor(Math.random() * totalFruits) + 1; //adjust required food to eat.
+
+
         // document.getElementById('remaining').textContent = remainingApples;
         eatenList.innerHTML = ""; // Clear the eaten apples list
 
