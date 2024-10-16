@@ -450,6 +450,7 @@
         document.getElementById("remaining").value = "";
         remainingApples = totalFruits;
         eatenApplesCount = 0;
+        requiredFruits = Math.floor(Math.random() * totalFruits) + 1; //adjust required food to eat.
         renderItems(selectedValue);
       }
 
