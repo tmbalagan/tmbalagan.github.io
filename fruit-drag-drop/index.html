@@ -1,700 +1,675 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fruit Funland: Drag and Drop Fruits to Your Friend!</title>
-    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <meta
-      name="title"
-      content="Fruit Funland: Drag and Drop Fruits to Your Friend!"
-    />
-    <meta
-      name="description"
-      content="Join the fun in Fruit Funland! Drag and drop fruits to watch your friend eat and learn about different fruits. Perfect for kids!"
-    />
-    <meta
-      name="keywords"
-      content="fruit game, drag and drop, kids learning, fun activities for children, educational games, chew fruits, interactive game"
-    />
-    <meta name="author" content="Balamurugan" />
-    <meta
-      property="og:title"
-      content="Fruit Funland: Drag and Drop Fruits to Your Friend!"
-    />
-    <meta
-      property="og:description"
-      content="Have fun in Fruit Funland! Drag fruits to your friend and watch them eat while learning about different fruits. Great for kids!"
-    />
-    <meta
-      property="og:url"
-      content="https://tmbalagan.github.io/fruit-drag-drop"
-    />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="Fruit Funland: Drag and Drop Fruits to Your Friend!"
-    />
-    <meta
-      name="twitter:description"
-      content="Join the fun in Fruit Funland! Drag and drop fruits to watch your friend eat and learn about different fruits. Perfect for kids!"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-    <style>
-      body {
-        font-family: "Roboto Mono", monospace;
-        padding: 20px;
-        margin: 0;
-        height: 100vh;
-        box-sizing: border-box;
-      }
 
-      h2 {
-        margin-bottom: 20px;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fruit Funland: Drag and Drop Fruits to Your Friend!</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <meta name="title" content="Fruit Funland: Drag and Drop Fruits to Your Friend!" />
+  <meta name="description"
+    content="Join the fun in Fruit Funland! Drag and drop fruits to watch your friend eat and learn about different fruits. Perfect for kids!" />
+  <meta name="keywords"
+    content="fruit game, drag and drop, kids learning, fun activities for children, educational games, chew fruits, interactive game" />
+  <meta name="author" content="Balamurugan" />
+  <meta property="og:title" content="Fruit Funland: Drag and Drop Fruits to Your Friend!" />
+  <meta property="og:description"
+    content="Have fun in Fruit Funland! Drag fruits to your friend and watch them eat while learning about different fruits. Great for kids!" />
+  <meta property="og:url" content="https://tmbalagan.github.io/fruit-drag-drop" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Fruit Funland: Drag and Drop Fruits to Your Friend!" />
+  <meta name="twitter:description"
+    content="Join the fun in Fruit Funland! Drag and drop fruits to watch your friend eat and learn about different fruits. Perfect for kids!" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <style>
+    body {
+      font-family: "Roboto Mono", monospace;
+      padding: 20px;
+      margin: 0;
+      height: 100vh;
+      box-sizing: border-box;
+    }
 
-      .buttons {
-        margin: 20px 0;
-        display: flex;
-        justify-content: flex-end;
-        align-items: flex-end;
-      }
+    h2 {
+      margin-bottom: 20px;
+    }
 
-      button {
-        margin: 0 5px;
-        padding: 10px 15px;
-        font-size: 14px;
-        font-weight: bold;
-        cursor: pointer;
-        background-color: #4caf50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-      }
+    .buttons {
+      margin: 20px 0;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+    }
 
-      button:hover {
-        background-color: #45a049;
-      }
+    button {
+      margin: 0 5px;
+      padding: 10px 15px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
 
-      #reset-button,
-      #reset-button:hover {
-        background-color: #e0e0e0;
-        color: #000;
-      }
+    button:hover {
+      background-color: #45a049;
+    }
 
-      .fruit {
-        width: 60px;
-        height: 60px;
-        background-color: transparent;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 40px;
-        cursor: grab;
-        transition: transform 1s ease, opacity 1s ease;
-      }
+    #reset-button,
+    #reset-button:hover {
+      background-color: #e0e0e0;
+      color: #000;
+    }
 
-      .person {
-        width: 120px;
-        height: 120px;
-        background-color: #ffcc99;
-        border-radius: 50%;
-        position: relative;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        border: 3px solid #000;
-        margin-top: 30px;
-      }
+    .fruit {
+      width: 60px;
+      height: 60px;
+      background-color: transparent;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 40px;
+      cursor: grab;
+      transition: transform 1s ease, opacity 1s ease;
+    }
 
-      .eye {
-        width: 15px;
-        height: 15px;
-        background-color: #000;
-        border-radius: 50%;
-        position: absolute;
-        top: 35px;
-      }
+    .person {
+      width: 120px;
+      height: 120px;
+      background-color: #ffcc99;
+      border-radius: 50%;
+      position: relative;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      border: 3px solid #000;
+      margin-top: 30px;
+    }
 
-      .eye.left {
-        left: 30px;
-      }
+    .eye {
+      width: 15px;
+      height: 15px;
+      background-color: #000;
+      border-radius: 50%;
+      position: absolute;
+      top: 35px;
+    }
 
-      .eye.right {
-        right: 30px;
-      }
+    .eye.left {
+      left: 30px;
+    }
 
-      .mouth {
-        width: 40px;
+    .eye.right {
+      right: 30px;
+    }
+
+    .mouth {
+      width: 40px;
+      height: 20px;
+      background-color: transparent;
+      border: 5px solid #000;
+      border-radius: 20px;
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    /* Chewing animation */
+    @keyframes chew {
+
+      0%,
+      100% {
         height: 20px;
-        background-color: transparent;
-        border: 5px solid #000;
-        border-radius: 20px;
-        position: absolute;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
       }
 
-      /* Chewing animation */
-      @keyframes chew {
-        0%,
-        100% {
-          height: 20px;
-        }
+      50% {
+        height: 10px;
+      }
+    }
 
-        50% {
-          height: 10px;
-        }
+    .chewing {
+      animation: chew 0.5s ease-in-out 3;
+    }
+
+    @keyframes headShake {
+      0% {
+        transform: rotate(0deg);
       }
 
-      .chewing {
-        animation: chew 0.5s ease-in-out 3;
+      15% {
+        transform: rotate(-10deg);
       }
 
-      @keyframes headShake {
-        0% {
-          transform: rotate(0deg);
-        }
-
-        15% {
-          transform: rotate(-10deg);
-        }
-
-        30% {
-          transform: rotate(10deg);
-        }
-
-        45% {
-          transform: rotate(-5deg);
-        }
-
-        60% {
-          transform: rotate(5deg);
-        }
-
-        75% {
-          transform: rotate(-3deg);
-        }
-
-        100% {
-          transform: rotate(0deg);
-        }
+      30% {
+        transform: rotate(10deg);
       }
 
-      .headShake {
-        animation: headShake 1s ease-in-out;
+      45% {
+        transform: rotate(-5deg);
       }
 
-      .eaten {
-        position: absolute;
-        transition: transform 1s ease, opacity 1s ease;
-        transform: scale(0);
-        opacity: 0;
+      60% {
+        transform: rotate(5deg);
       }
 
-      .eaten-apples {
-        margin-top: 20px;
-        font-size: 18px;
-        max-width: 400px;
-        border: 1px solid #ccc;
-        padding: 10px;
-        background-color: white;
-        border-radius: 5px;
+      75% {
+        transform: rotate(-3deg);
       }
 
-      .eaten-apples strong {
-        color: green;
+      100% {
+        transform: rotate(0deg);
       }
+    }
 
-      .eaten-apples .fruit {
-        margin: 5px;
-      }
+    .headShake {
+      animation: headShake 1s ease-in-out;
+    }
 
+    .eaten {
+      position: absolute;
+      transition: transform 1s ease, opacity 1s ease;
+      transform: scale(0);
+      opacity: 0;
+    }
+
+    .eaten-apples {
+      margin-top: 20px;
+      font-size: 18px;
+      max-width: 400px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      background-color: white;
+      border-radius: 5px;
+    }
+
+    .eaten-apples strong {
+      color: green;
+    }
+
+    .eaten-apples .fruit {
+      margin: 5px;
+    }
+
+    .main {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+    }
+
+    .main-content {
+      grid-column: span 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .select-fruits {
+      margin-top: 20px;
+    }
+
+    .select-fruits option,
+    .select-fruits select {
+      font-size: 16px;
+    }
+
+    .dragging {
+      opacity: 0.5;
+      border: 2px dashed #000;
+    }
+
+    .drag-cursor {
+      cursor: grabbing;
+    }
+
+    .drag-over {
+      background-color: #f0f0f0;
+      border: 2px dashed #000;
+    }
+
+    .test {
+      margin-top: 20px;
+      border: 1px solid #000;
+      padding: 10px;
+      border-radius: 4px;
+    }
+
+    .input-box {
+      font-size: 16px;
+      padding: 5px;
+      border-radius: 6px;
+      margin-top: 10px;
+      height: 25px;
+    }
+
+    .label {
+      font-size: 16px;
+    }
+
+    #empty-eaten-fruit {
+      font-style: italic;
+      padding-top: 10px;
+    }
+
+    @media (max-width: 1024px) {
       .main {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        gap: 10px;
-      }
-
-      .main-content {
-        grid-column: span 3;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        grid-template-columns: 1fr;
+        gap: 0;
       }
 
       .select-fruits {
-        margin-top: 20px;
+        border-top: 3px dotted grey;
+        padding-top: 20px;
+        margin-top: 0;
       }
 
-      .select-fruits option,
-      .select-fruits select {
+      h2 {
         font-size: 16px;
       }
+    }
 
-      .dragging {
-        opacity: 0.5;
-        border: 2px dashed #000;
+    @media (max-width: 600px) {
+      .fruit {
+        width: 40px;
+        height: 40px;
+        font-size: 30px;
       }
 
-      .drag-cursor {
-        cursor: grabbing;
+      button {
+        font-size: 14px;
       }
+    }
+  </style>
+</head>
 
-      .drag-over {
-        background-color: #f0f0f0;
-        border: 2px dashed #000;
-      }
-
-      .test {
-        margin-top: 20px;
-        border: 1px solid #000;
-        padding: 10px;
-        border-radius: 4px;
-      }
-
-      .input-box {
-        font-size: 16px;
-        padding: 5px;
-        border-radius: 6px;
-        margin-top: 10px;
-        height: 25px;
-      }
-
-      .label {
-        font-size: 16px;
-      }
-
-      #empty-eaten-fruit {
-        font-style: italic;
-        padding-top: 10px;
-      }
-
-      @media (max-width: 1024px) {
-        .main {
-          grid-template-columns: 1fr;
-          gap: 0;
-        }
-
-        .select-fruits {
-          border-top: 3px dotted grey;
-          padding-top: 20px;
-          margin-top: 0;
-        }
-
-        h2 {
-          font-size: 16px;
-        }
-      }
-
-      @media (max-width: 600px) {
-        .fruit {
-          width: 40px;
-          height: 40px;
-          font-size: 30px;
-        }
-
-        button {
-          font-size: 14px;
-        }
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="main">
-      <div class="content"></div>
-      <div class="content main-content">
-        <h2>Drag and drop the fruit to your friend and watch them eat! 😋</h2>
-        <div id="fruit-container">
-          <!-- Apple emoji is added here -->
-        </div>
-
-        <!-- Person is now the drop point -->
-        <div class="person" id="person">
-          <div class="eye left"></div>
-          <div class="eye right"></div>
-          <div class="mouth" id="mouth"></div>
-        </div>
-
-        <!-- Eaten apples list -->
-        <div class="eaten-apples" id="eaten-apples">
-          <!-- <strong>Eaten Fruit</strong> -->
-          <div id="eaten-list">
-            <!-- This will update dynamically -->
-          </div>
-        </div>
-        <div id="empty-eaten-fruit">I haven't eaten fruit yet, feed me! 😔</div>
+<body>
+  <div class="main">
+    <div class="content"></div>
+    <div class="content main-content">
+      <h2>Drag and drop the fruit to your friend and watch them eat! 😋</h2>
+      <div id="fruit-container">
+        <!-- Apple emoji is added here -->
       </div>
-      <div class="content">
-        <div class="select-fruits">
-          <label>Choose fruit</label>
-          <select id="dropdown" onchange="handleSelectChange()">
-            <option value="🍎">Apple 🍎</option>
-            <option value="🍇">Grapes 🍇</option>
-            <option value="🍓">Strawberry 🍓</option>
-            <option value="🍍">Pineapple 🍍</option>
-          </select>
+
+      <!-- Person is now the drop point -->
+      <div class="person" id="person">
+        <div class="eye left"></div>
+        <div class="eye right"></div>
+        <div class="mouth" id="mouth"></div>
+      </div>
+
+      <!-- Eaten apples list -->
+      <div class="eaten-apples" id="eaten-apples">
+        <!-- <strong>Eaten Fruit</strong> -->
+        <div id="eaten-list">
+          <!-- This will update dynamically -->
         </div>
-        <div class="test">
-          <form id="simpleForm" onsubmit="handleSubmit(event)">
-            <label for="eaten" class="label">Eaten fruit: 😋</label>
-            <br />
-            <input
-              type="number"
-              id="eaten"
-              name="eaten"
-              placeholder="Enter eaten fruit"
-              class="input-box"
-              autocomplete="off"
-              required
-            />
-            <br /><br />
-            <label for="remaining" class="label">Remaining fruit: 📦</label>
-            <input
-              type="number"
-              id="remaining"
-              name="remaining"
-              placeholder="Enter remaining fruit"
-              class="input-box"
-              autocomplete="off"
-              required
-            />
-            <br /><br />
-            <button type="submit">Submit</button>
-          </form>
-        </div>
-        <div class="buttons">
-          <button id="reset-button">Reset</button>
-          <!-- <button id="fullscreen-button">Fullscreen</button> -->
-        </div>
+      </div>
+      <div id="empty-eaten-fruit">I haven't eaten fruit yet, feed me! 😔</div>
+    </div>
+    <div class="content">
+      <div class="select-fruits">
+        <label>Choose fruit</label>
+        <select id="dropdown" onchange="handleSelectChange()">
+          <option value="🍎">Apple 🍎</option>
+          <option value="🍇">Grapes 🍇</option>
+          <option value="🍓">Strawberry 🍓</option>
+          <option value="🍍">Pineapple 🍍</option>
+        </select>
+      </div>
+      <div class="test">
+        <form id="simpleForm" onsubmit="handleSubmit(event)">
+          <label for="eaten" class="label">Eaten fruit: 😋</label>
+          <br />
+          <input type="number" id="eaten" name="eaten" placeholder="Enter eaten fruit" class="input-box"
+            autocomplete="off" required />
+          <br /><br />
+          <label for="remaining" class="label">Remaining fruit: 📦</label>
+          <input type="number" id="remaining" name="remaining" placeholder="Enter remaining fruit" class="input-box"
+            autocomplete="off" required />
+          <br /><br />
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+      <div class="buttons">
+        <button id="reset-button">Reset</button>
+        <!-- <button id="fullscreen-button">Fullscreen</button> -->
       </div>
     </div>
+  </div>
 
-    <!-- Chewing sound -->
-    <audio id="chewing-sound" src="chewing-sound.mp3"></audio>
+  <!-- Chewing sound -->
+  <audio id="chewing-sound" src="chewing-sound.mp3"></audio>
 
-    <script>
-      let fruitContainer = document.getElementById("fruit-container");
-      const person = document.getElementById("person");
-      const personMouth = document.getElementById("mouth");
-      const eatenList = document.getElementById("eaten-list");
-      const chewingSound = document.getElementById("chewing-sound");
-      const emptyEatenFruit = document.getElementById("empty-eaten-fruit");
-      let totalFruits = 10;
-      let remainingApples = 0;
-      let requiredFruits = Math.floor(Math.random() * totalFruits) + 1; //adjust required food to eat.
-      let eatenApplesCount = 0;
-      let selectedValue = "";
+  <script>
+    let fruitContainer = document.getElementById("fruit-container");
+    const person = document.getElementById("person");
+    const personMouth = document.getElementById("mouth");
+    const eatenList = document.getElementById("eaten-list");
+    const chewingSound = document.getElementById("chewing-sound");
+    const emptyEatenFruit = document.getElementById("empty-eaten-fruit");
+    let totalFruits = 10;
+    let remainingApples = 0;
+    let requiredFruits = Math.floor(Math.random() * totalFruits) + 1; //adjust required food to eat.
+    let eatenApplesCount = 0;
+    let selectedValue = "";
 
-      // Set audio start and end time in seconds
-      const startTime = 2; //seconds
-      const endTime = 3;
+    // Set audio start and end time in seconds
+    const startTime = 2; //seconds
+    const endTime = 3;
 
-      if (eatenList.childElementCount === 0) {
-        emptyEatenFruit.style.visibility = "visible";
-        document.getElementById("eaten-apples").style.visibility = "hidden";
-      }
+    if (eatenList.childElementCount === 0) {
+      emptyEatenFruit.style.visibility = "visible";
+      document.getElementById("eaten-apples").style.visibility = "hidden";
+    }
 
-      person.addEventListener("dragenter", dragEnter);
-      person.addEventListener("dragleave", dragLeave);
+    person.addEventListener("dragenter", dragEnter);
+    person.addEventListener("dragleave", dragLeave);
 
-      renderItems("🍎");
+    renderItems("🍎");
 
-      function handleSubmit(e) {
-        e.preventDefault();
-        const eaten = document.getElementById("eaten").value;
-        const remaining = document.getElementById("remaining").value;
+    function handleSubmit(e) {
+      e.preventDefault();
+      const eaten = document.getElementById("eaten").value;
+      const remaining = document.getElementById("remaining").value;
 
-        // if (!eaten || !remaining) {
-        //   alert("Please put in both numbers to check! 😊✨");
-        //   return;
-        // }
+      // if (!eaten || !remaining) {
+      //   alert("Please put in both numbers to check! 😊✨");
+      //   return;
+      // }
 
-        if (
-          parseInt(eaten) === eatenApplesCount &&
-          parseInt(remaining) === remainingApples
-        ) {
-          document.getElementById("eaten").value = "";
-          document.getElementById("remaining").value = "";
-          if (navigator.onLine) {
-            // You are online
-            confetti({
-              particleCount: 100,
-              spread: 70,
-              origin: { y: 0.6 },
-            });
-          }
-        } else {
-          alert("Oh no! 😟 Try again! 🌟");
-        }
-      }
-
-      function handleSelectChange() {
-        const selectElement = document.getElementById("dropdown");
-        const selectedValue = selectElement.value;
-        fruitContainer.innerHTML = "";
-        eatenList.innerHTML = "";
-
-        emptyEatenFruit.style.visibility = "visible";
-        document.getElementById("eaten-apples").style.visibility = "hidden";
+      if (
+        parseInt(eaten) === eatenApplesCount &&
+        parseInt(remaining) === remainingApples
+      ) {
         document.getElementById("eaten").value = "";
         document.getElementById("remaining").value = "";
-        remainingApples = totalFruits;
-        eatenApplesCount = 0;
-        requiredFruits = Math.floor(Math.random() * totalFruits) + 1; //adjust required food to eat.
-        renderItems(selectedValue);
-      }
-
-      function renderItems(value) {
-        for (let i = 1; i <= totalFruits; i++) {
-          const newElement = document.createElement("div");
-          newElement.className = "fruit";
-          newElement.draggable = true;
-          newElement.id = `fruit${i}`;
-          newElement.textContent = value;
-          fruitContainer.appendChild(newElement);
-
-          // Drag event handlers
-          const apples = document.querySelectorAll(".fruit");
-          apples.forEach((fruit) => {
-            fruit.addEventListener("dragstart", dragStart);
-            fruit.addEventListener("dragend", dragEnd);
-
-            // Touch event handlers for mobile
-            fruit.addEventListener("touchstart", touchStart);
-            fruit.addEventListener("touchend", touchEnd);
-            fruit.addEventListener("touchmove", touchMove);
+        if (navigator.onLine) {
+          // You are online
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 },
           });
-
-          remainingApples = document.querySelectorAll(".fruit").length;
         }
-        selectedValue = value;
+      } else {
+        alert("Oh no! 😟 Try again! 🌟");
       }
+    }
 
-      function dragStart(e) {
-        e.dataTransfer.setData("text", e.target.id);
-        e.target.classList.add("dragging");
-        e.target.classList.add("drag-cursor");
-        person.classList.remove("headShake");
+    function handleSelectChange() {
+      const selectElement = document.getElementById("dropdown");
+      const selectedValue = selectElement.value;
+      fruitContainer.innerHTML = "";
+      eatenList.innerHTML = "";
+
+      emptyEatenFruit.style.visibility = "visible";
+      document.getElementById("eaten-apples").style.visibility = "hidden";
+      document.getElementById("eaten").value = "";
+      document.getElementById("remaining").value = "";
+      remainingApples = totalFruits;
+      eatenApplesCount = 0;
+      requiredFruits = Math.floor(Math.random() * totalFruits) + 1; //adjust required food to eat.
+      renderItems(selectedValue);
+    }
+
+    function renderItems(value) {
+      for (let i = 1; i <= totalFruits; i++) {
+        const newElement = document.createElement("div");
+        newElement.className = "fruit";
+        newElement.draggable = true;
+        newElement.id = `fruit${i}`;
+        newElement.textContent = value;
+        fruitContainer.appendChild(newElement);
+
+        // Drag event handlers
+        const apples = document.querySelectorAll(".fruit");
+        apples.forEach((fruit) => {
+          fruit.addEventListener("dragstart", dragStart);
+          fruit.addEventListener("dragend", dragEnd);
+
+          // Touch event handlers for mobile
+          fruit.addEventListener("touchstart", touchStart);
+          fruit.addEventListener("touchend", touchEnd);
+          fruit.addEventListener("touchmove", touchMove);
+        });
+
+        remainingApples = document.querySelectorAll(".fruit").length;
       }
+      selectedValue = value;
+    }
 
-      function dragEnd(e) {
-        e.target.classList.remove("dragging");
-        e.target.classList.remove("drag-cursor");
-        person.classList.remove("drag-over");
-      }
+    function dragStart(e) {
+      e.dataTransfer.setData("text", e.target.id);
+      e.target.classList.add("dragging");
+      e.target.classList.add("drag-cursor");
+      person.classList.remove("headShake");
+    }
 
-      function dragEnter(e) {
+    function dragEnd(e) {
+      e.target.classList.remove("dragging");
+      e.target.classList.remove("drag-cursor");
+      person.classList.remove("drag-over");
+    }
+
+    function dragEnter(e) {
+      e.preventDefault();
+      person.classList.add("drag-over");
+    }
+
+    function dragLeave(e) {
+      e.preventDefault();
+      person.classList.remove("drag-over");
+    }
+
+    person.addEventListener("dragover", (e) => {
+      e.preventDefault();
+    });
+
+    person.addEventListener("drop", (e) => {
+      // Before handling the drop action, we set (eatenApplesCount + 1) to easily check and prevent eating more fruit.
+      const isStomachNotFull = requiredFruits >= eatenApplesCount + 1;
+
+      if (remainingApples > 0 && isStomachNotFull) {
         e.preventDefault();
-        person.classList.add("drag-over");
-      }
+        const fruitId = e.dataTransfer.getData("text");
+        const fruit = document.getElementById(fruitId);
+        handleDrop(fruit);
+      } else {
+        person.classList.add("headShake");
+        speak("My tummy feels full! I'm happy!");
 
-      function dragLeave(e) {
-        e.preventDefault();
-        person.classList.remove("drag-over");
-      }
-
-      person.addEventListener("dragover", (e) => {
-        e.preventDefault();
-      });
-
-      person.addEventListener("drop", (e) => {
-        // Before handling the drop action, we set (eatenApplesCount + 1) to easily check and prevent eating more fruit.
-        const isTummyFull = requiredFruits >= (eatenApplesCount + 1);
-
-        if (remainingApples > 0 && isTummyFull) {
-          e.preventDefault();
-          const fruitId = e.dataTransfer.getData("text");
-          const fruit = document.getElementById(fruitId);
-          handleDrop(fruit);
-        } else {
-          person.classList.add("headShake");
-          speak("My tummy feels full! I'm happy!");
-
-          setTimeout(() => {
-            speak(
-              "Let’s enter the remaining fruits and the ones we have eaten."
-            );
-          }, 3000);
-        }
-      });
-
-      // Touch events
-      let currentTouchFruit = null;
-
-      function touchStart(e) {
-        e.preventDefault();
-        const fruitId = e.target.id;
-        currentTouchFruit = document.getElementById(fruitId);
-        currentTouchFruit.classList.add("dragging");
-        currentTouchFruit.classList.add("drag-cursor");
-
-        document.getElementById("person").classList.add("drag-over");
-      }
-
-      function touchEnd(e) {
-        e.preventDefault();
-        if (!currentTouchFruit) return;
-
-        // Check if dropped on the person
-        const personRect = person.getBoundingClientRect();
-        const fruitRect = currentTouchFruit.getBoundingClientRect();
-        // console.log(
-        //   "fruitRect::: ",
-        //   fruitRect.left,
-        //   personRect.right,
-        //   fruitRect.left < personRect.right
-        // );
-        if (
-          fruitRect.left < personRect.right &&
-          fruitRect.right > personRect.left &&
-          fruitRect.top < personRect.bottom &&
-          fruitRect.bottom > personRect.top
-        ) {
-          handleDrop(currentTouchFruit);
-        }
-
-        currentTouchFruit.classList.remove("dragging");
-        currentTouchFruit.classList.remove("drag-cursor");
-        document.getElementById("person").classList.remove("drag-over");
-        currentTouchFruit = null; // Reset the current touch fruit
-      }
-
-      function touchMove(e) {
-        e.preventDefault();
-        if (!currentTouchFruit) return;
-
-        // Get touch position
-        const touch = e.touches[0];
-
-        // Update position of the fruit
-        currentTouchFruit.style.position = "absolute";
-
-        currentTouchFruit.style.left = `${
-          touch.clientX - currentTouchFruit.offsetWidth / 2
-        }px`;
-        currentTouchFruit.style.top = `${
-          touch.clientY - currentTouchFruit.offsetHeight / 2
-        }px`;
-      }
-
-      function handleDrop(fruit) {
-        // Clone the fruit to animate it moving toward the person's mouth
-        const clonedApple = fruit.cloneNode(true);
-        clonedApple.classList.add("eaten");
-
-        // Calculate position to move the fruit toward the person's mouth
-        const personRect = personMouth.getBoundingClientRect();
-        const personDropRect = person.getBoundingClientRect();
-        const appleRect = fruit.getBoundingClientRect();
-
-        clonedApple.style.position = "absolute";
-        clonedApple.style.left = `${appleRect.left - personDropRect.left}px`;
-        clonedApple.style.top = `${appleRect.top - personDropRect.top}px`;
-
-        person.appendChild(clonedApple);
-
-        // Move the fruit toward the person's mouth
         setTimeout(() => {
-          clonedApple.style.transform = `translate(${
-            personRect.left - appleRect.left
+          speak(
+            "Let’s enter the remaining fruits and the ones we have eaten."
+          );
+        }, 3000);
+      }
+    });
+
+    // Touch events
+    let currentTouchFruit = null;
+
+    function touchStart(e) {
+      e.preventDefault();
+      const fruitId = e.target.id;
+      currentTouchFruit = document.getElementById(fruitId);
+      currentTouchFruit.classList.add("dragging");
+      currentTouchFruit.classList.add("drag-cursor");
+
+      person.classList.add("drag-over");
+      person.classList.remove("headShake");
+    }
+
+    function touchEnd(e) {
+      e.preventDefault();
+      if (!currentTouchFruit) return;
+
+      // Check if dropped on the person
+      const personRect = person.getBoundingClientRect();
+      const fruitRect = currentTouchFruit.getBoundingClientRect();
+
+      if (
+        fruitRect.left < personRect.right &&
+        fruitRect.right > personRect.left &&
+        fruitRect.top < personRect.bottom &&
+        fruitRect.bottom > personRect.top
+      ) {
+        handleDrop(currentTouchFruit);
+      }
+
+      currentTouchFruit.classList.remove("dragging");
+      currentTouchFruit.classList.remove("drag-cursor");
+      document.getElementById("person").classList.remove("drag-over");
+      currentTouchFruit = null; // Reset the current touch fruit
+    }
+
+    function touchMove(e) {
+      e.preventDefault();
+      // Handling the touch end action, we set (eatenApplesCount + 1) to easily check and prevent eating more fruit.
+      const isStomachNotFull = requiredFruits >= eatenApplesCount + 1;
+
+      if (!currentTouchFruit) return;
+
+      if (!isStomachNotFull) {
+        person.classList.add("headShake");
+        speak("My tummy feels full! I'm happy!");
+
+        setTimeout(() => {
+          speak(
+            "Let’s enter the remaining fruits and the ones we have eaten."
+          );
+        }, 3000);
+
+        return
+      }
+
+      // Get touch position
+      const touch = e.touches[0];
+
+      // Update position of the fruit
+      currentTouchFruit.style.position = "absolute";
+
+      currentTouchFruit.style.left = `${touch.clientX - currentTouchFruit.offsetWidth / 2
+        }px`;
+      currentTouchFruit.style.top = `${touch.clientY - currentTouchFruit.offsetHeight / 2
+        }px`;
+    }
+
+    function handleDrop(fruit) {
+      // Clone the fruit to animate it moving toward the person's mouth
+      const clonedApple = fruit.cloneNode(true);
+      clonedApple.classList.add("eaten");
+
+      // Calculate position to move the fruit toward the person's mouth
+      const personRect = personMouth.getBoundingClientRect();
+      const personDropRect = person.getBoundingClientRect();
+      const appleRect = fruit.getBoundingClientRect();
+
+      clonedApple.style.position = "absolute";
+      clonedApple.style.left = `${appleRect.left - personDropRect.left}px`;
+      clonedApple.style.top = `${appleRect.top - personDropRect.top}px`;
+
+      person.appendChild(clonedApple);
+
+      // Move the fruit toward the person's mouth
+      setTimeout(() => {
+        clonedApple.style.transform = `translate(${personRect.left - appleRect.left
           }px, ${personRect.top - appleRect.top}px) scale(0)`;
-          clonedApple.style.opacity = 0;
-          personMouth.classList.add("chewing"); // Start the chewing animation
-        }, 10); // Small delay to allow positioning before animation
+        clonedApple.style.opacity = 0;
+        personMouth.classList.add("chewing"); // Start the chewing animation
+      }, 10); // Small delay to allow positioning before animation
 
-        // Hide the original fruit and remove the clone after animation
-        fruit.style.visibility = "hidden"; // Hide the original fruit
-        fruit.classList.remove("dragging");
+      // Hide the original fruit and remove the clone after animation
+      fruit.style.visibility = "hidden"; // Hide the original fruit
+      fruit.classList.remove("dragging");
 
-        // Play chewing sound
-        chewingSound.currentTime = startTime; // Reset sound to start
+      // Play chewing sound
+      chewingSound.currentTime = startTime; // Reset sound to start
 
-        chewingSound.addEventListener("timeupdate", function () {
-          if (chewingSound.currentTime >= endTime) {
-            chewingSound.pause(); // Pause the audio when it reaches endTime
-          }
-        });
-
-        chewingSound.play(); // Play the sound
-
-        setTimeout(() => {
-          person.removeChild(clonedApple);
-        }, 1000); // Matches the transition duration (1 second)
-
-        // Stop the chewing animation after it completes
-        setTimeout(() => {
-          personMouth.classList.remove("chewing");
-        }, 1500); // 3 chewing cycles (3 * 0.5s)
-
-        // Update remaining apples count
-        remainingApples--;
-
-        // Increment eaten apples count and update the list with fruit emoji
-        eatenApplesCount++;
-        const listItem = document.createElement("div");
-        listItem.className = "fruit"; // Apply the same fruit class style
-        listItem.textContent = selectedValue; // Add fruit emoji to the list
-        eatenList.appendChild(listItem);
-
-        document.body.classList.remove("drag-cursor");
-        person.classList.remove("drag-over");
-
-        emptyEatenFruit.style.visibility = "hidden";
-        document.getElementById("eaten-apples").style.visibility = "visible";
-      }
-
-      // Reset functionality
-      document.getElementById("reset-button").addEventListener("click", () => {
-        remainingApples = totalFruits;
-        eatenApplesCount = 0;
-        // Reinitialize the required fruits value.
-        requiredFruits = Math.floor(Math.random() * totalFruits) + 1; //adjust required food to eat.
-
-
-        // document.getElementById('remaining').textContent = remainingApples;
-        eatenList.innerHTML = ""; // Clear the eaten apples list
-
-        // Show original apples again
-        document.querySelectorAll(".fruit").forEach((fruit) => {
-          //  to remove position styles set touch move
-          fruit.removeAttribute("style");
-          fruit.style.visibility = "visible";
-        });
-
-        // Reset person's mouth animation
-        personMouth.classList.remove("chewing");
-        document.getElementById("eaten-apples").style.visibility = "hidden";
+      chewingSound.addEventListener("timeupdate", function () {
+        if (chewingSound.currentTime >= endTime) {
+          chewingSound.pause(); // Pause the audio when it reaches endTime
+        }
       });
 
-      function speak(text) {
-        if ("speechSynthesis" in window) {
-          const synth = window.speechSynthesis;
-          if (synth.speaking || synth.pending) synth.cancel();
-          const utterance = new SpeechSynthesisUtterance(text);
-          synth.speak(utterance);
-        }
-      }
+      chewingSound.play(); // Play the sound
 
-      // // Fullscreen functionality
-      // document.getElementById('fullscreen-button').addEventListener('click', () => {
-      //   if (!document.fullscreenElement) {
-      //     document.documentElement.requestFullscreen();
-      //   } else {
-      //     if (document.exitFullscreen) {
-      //       document.exitFullscreen();
-      //     }
-      //   }
-      // });
-    </script>
-  </body>
+      setTimeout(() => {
+        person.removeChild(clonedApple);
+      }, 1000); // Matches the transition duration (1 second)
+
+      // Stop the chewing animation after it completes
+      setTimeout(() => {
+        personMouth.classList.remove("chewing");
+      }, 1500); // 3 chewing cycles (3 * 0.5s)
+
+      // Update remaining apples count
+      remainingApples--;
+
+      // Increment eaten apples count and update the list with fruit emoji
+      eatenApplesCount++;
+      const listItem = document.createElement("div");
+      listItem.className = "fruit"; // Apply the same fruit class style
+      listItem.textContent = selectedValue; // Add fruit emoji to the list
+      eatenList.appendChild(listItem);
+
+      document.body.classList.remove("drag-cursor");
+      person.classList.remove("drag-over");
+
+      emptyEatenFruit.style.visibility = "hidden";
+      document.getElementById("eaten-apples").style.visibility = "visible";
+    }
+
+    // Reset functionality
+    document.getElementById("reset-button").addEventListener("click", () => {
+      remainingApples = totalFruits;
+      eatenApplesCount = 0;
+      // Reinitialize the required fruits value.
+      requiredFruits = Math.floor(Math.random() * totalFruits) + 1; //adjust required food to eat.
+
+      // document.getElementById('remaining').textContent = remainingApples;
+      eatenList.innerHTML = ""; // Clear the eaten apples list
+
+      // Show original apples again
+      document.querySelectorAll(".fruit").forEach((fruit) => {
+        //  to remove position styles set touch move
+        fruit.removeAttribute("style");
+        fruit.style.visibility = "visible";
+      });
+
+      // Reset person's mouth animation
+      personMouth.classList.remove("chewing");
+      document.getElementById("eaten-apples").style.visibility = "hidden";
+    });
+
+    function speak(text) {
+      if ("speechSynthesis" in window) {
+        const synth = window.speechSynthesis;
+        if (synth.speaking || synth.pending) synth.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        synth.speak(utterance);
+      }
+    }
+
+    // // Fullscreen functionality
+    // document.getElementById('fullscreen-button').addEventListener('click', () => {
+    //   if (!document.fullscreenElement) {
+    //     document.documentElement.requestFullscreen();
+    //   } else {
+    //     if (document.exitFullscreen) {
+    //       document.exitFullscreen();
+    //     }
+    //   }
+    // });
+  </script>
+</body>
+
 </html>
