@@ -14,7 +14,7 @@
     <meta property="og:title" content="Simple Typing Practice for Children">
     <meta property="og:description"
         content="Engaging typing practice tool for kids with features to track performance and earn medals.">
-    <meta property="og:url" content="https://tmbalagan.github.io/typing">
+    <meta property="og:url" content="https://tmbalagan.github.io/games/typing">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Simple Typing Practice for Children">
     <meta name="twitter:description" content="A fun and engaging tool for kids to enhance their typing skills.">
@@ -34,32 +34,26 @@
 
         body {
             font-family: "Roboto Mono", monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            margin: 0 auto;
+            max-width: 1200px;
         }
 
         .container {
-            text-align: center;
-            margin-top: 50px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .score {
             font-size: 24px;
-            margin-bottom: 20px;
         }
 
         .word {
             font-size: 100px;
             font-weight: bold;
             letter-spacing: 5px;
-        }
-
-        .controls {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
+            margin-top: 20px;
         }
 
         .btn {
@@ -76,10 +70,9 @@
         }
 
         .sidebar {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .counters {
@@ -136,6 +129,8 @@
         .medals-section {
             display: flex;
             flex-direction: column;
+            max-height: 300px;
+            overflow: auto;
         }
 
         .medals-grid {
@@ -163,8 +158,10 @@
             display: inline-block;
             cursor: pointer;
             font-size: 30px;
+        }
+
+        .word-tools {
             margin-top: 30px;
-            margin-left: 10px;
         }
 
         .letter-underline {
@@ -184,55 +181,66 @@
         .github-link {
             margin-bottom: 20px;
         }
+
+        main {
+            display: flex;
+            margin-top: 50px;
+            height: 80vh;
+        }
     </style>
     <title>Typing Practice UI</title>
 </head>
 
 <body>
-    <!-- <header>
+    <header>
         <nav>
             <a href="/games/">🏠 Home</a>
         </nav>
-    </header> -->
-    <div class="container">
-        <div class="score">
-            <span class="score-value" title="Accurate Word Typing Count" id="stars"></span>
+    </header>
+    <main>
+        <div class="container">
+            <div class="score">
+                <span class="score-value" id="stars"></span>
+                <span title="Accurate Word Count" class="info-icon">ℹ️</span>
+            </div>
+            <h3 class="word" id="word-display">grapefruit</h3>
+            <div class="word-tools">
+                <span class="word-pronounce" title="Learn How to Pronounce" id="learn-to-pronouce">🗣️</span>
+                <span class="mute-text-speak" id="mute-text-speak" title="Toggle Mute / Listen">🔊</span>
+                <p id="message" class="message"></p>
+            </div>
         </div>
-        <div class="word" id="word-display">grapefruit</div>
-        <span class="word-pronounce" title="Learn to pronounce" id="learn-to-pronouce">🗣️</span>
-        <span class="mute-text-speak" id="mute-text-speak" title="Toggle Mute and Listen">🔊</span>
-        <p id="message" class="message"></p>
-        <div class="controls">
-            <button class="btn" title="Clear All" id="reset">Reset</button>
-            <button class="btn" title="Toggle Full Screen" id="fullscreen">
-                Full Screen
-            </button>
-        </div>
-    </div>
-    <div class="sidebar">
-        <p class="github-link">😊<a href="https://github.com/tmbalagan/tmbalagan.github.io/tree/main/typing"
-                target="_blank">GitHub</a></p>
+        <div class="sidebar">
+            <div class="sidebar-top-section">
+                <div class="counters">
+                    <div class="correct-counter">
+                        <span class="counter correct" id="correct-count">0</span>
+                        <span class="label">Correct
+                            <span title="Correct number of letters" class="info-icon">ℹ️</span></span>
+                    </div>
+                    <div class="incorrect-counter">
+                        <span class="counter incorrect" id="incorrect-count">0</span>
+                        <span class="label">Incorrect
+                            <span title="Incorrect number of letters" class="info-icon">ℹ️</span></span>
+                    </div>
+                </div>
+                <div class="medals-section">
+                    <h3>
+                        Medals
+                        <span title="Earn 10 stars to receive 1 medal" class="info-icon">ℹ️</span>
+                    </h3>
+                    <div class="medals-grid" id="medals"></div>
+                </div>
+            </div>
 
-        <div class="counters">
-            <div class="correct-counter">
-                <span class="counter correct" id="correct-count">0</span>
-                <span class="label">Correct
-                    <span title="Accurate Typing Count" class="info-icon">ℹ️</span></span>
-            </div>
-            <div class="incorrect-counter">
-                <span class="counter incorrect" id="incorrect-count">0</span>
-                <span class="label">Incorrect
-                    <span title="Incorrect Letter Count" class="info-icon">ℹ️</span></span>
+            <div class="controls">
+                <button class="btn" title="Clear All" id="reset">Reset</button>
+                <button class="btn" title="Toggle Full Screen" id="fullscreen">
+                    Full Screen
+                </button>
             </div>
         </div>
-        <div class="medals-section">
-            <h3>
-                Medals
-                <span title="Earn 10 stars and receive 1 medal." class="info-icon">ℹ️</span>
-            </h3>
-            <div class="medals-grid" id="medals"></div>
-        </div>
-    </div>
+    </main>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const message = document.getElementById("message");
@@ -412,7 +420,10 @@
                         }
                     })
                     .join("");
-                wordDisplay.innerHTML = displayText;
+
+                setTimeout(() => {
+                    wordDisplay.innerHTML = displayText;
+                }, 300)
             }
 
             let correctLetterTypedCount = 0;
