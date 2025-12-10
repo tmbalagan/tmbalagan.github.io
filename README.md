@@ -3,6 +3,7 @@
 # Repo Info
 
 This repo contains personal tasks, projects, and learning experiments.
+[Check it out here](https://tmbalagan.github.io/)
 
 
 ## games/
