@@ -2,24 +2,19 @@
 
 Small interactive games built with HTML, CSS, and JavaScript.
 
-## 📂 Structure
+## 🔗 Links
 
-- **Find the Missing**  
+- **Find the Missing** <a href="https://tmbalagan.github.io/games/find-the-missing/">Play</a>
   <!-- Source: [`find-the-missing`](./find-the-missing)   -->
-  Play: <a href="https://tmbalagan.github.io/games/find-the-missing/">Click Here</a>
 
-- **Fruit Drag & Drop**  
+- **Fruit Drag & Drop** <a href="https://tmbalagan.github.io/games/fruit-drag-drop/">Play</a>
   <!-- Source: [`fruit-drag-drop`](./fruit-drag-drop)   -->
-  Play: <a href="https://tmbalagan.github.io/games/fruit-drag-drop/">Click Here</a>
 
-- **Jumping Steps Game**  
+- **Jumping Steps Game** <a href="https://tmbalagan.github.io/games/jumping-steps-game/">Play</a>
   <!-- Source: [`jumping-steps-game`](./jumping-steps-game)   -->
-  Play: <a href="https://tmbalagan.github.io/games/jumping-steps-game/">Click Here</a>
 
-- **Typing Practice**  
+- **Typing Practice** <a href="https://tmbalagan.github.io/games/typing/">Play</a>
   <!-- Source: [`typing`](./typing)   -->
-  Play: <a href="https://tmbalagan.github.io/games/typing/">Click Here</a>
 
-- **Pattern Recognition (New)**  
+- **Pattern Recognition (New)** <a href="https://tmbalagan.github.io/games/pattern-recognition/">Play</a>
   <!-- Source: [`pattern-recognition`](./pattern-recognition)   -->
-  Play: <a href="https://tmbalagan.github.io/games/pattern-recognition/">Click Here</a>
