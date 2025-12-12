@@ -4,6 +4,9 @@ Small interactive games built with HTML, CSS, and JavaScript.
 
 ## 🔗 Links
 
+- **Pattern Recognition 🆕** <a href="https://tmbalagan.github.io/games/pattern-recognition/">Play</a>
+  <!-- Source: [`pattern-recognition`](./pattern-recognition)   -->
+
 - **Find the Missing** <a href="https://tmbalagan.github.io/games/find-the-missing/">Play</a>
   <!-- Source: [`find-the-missing`](./find-the-missing)   -->
 
@@ -15,6 +18,3 @@ Small interactive games built with HTML, CSS, and JavaScript.
 
 - **Typing Practice** <a href="https://tmbalagan.github.io/games/typing/">Play</a>
   <!-- Source: [`typing`](./typing)   -->
-
-- **Pattern Recognition (New)** <a href="https://tmbalagan.github.io/games/pattern-recognition/">Play</a>
-  <!-- Source: [`pattern-recognition`](./pattern-recognition)   -->
