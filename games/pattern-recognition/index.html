@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="../favicon.ico" type="image/x-icon" />
+    <title>Fun Pattern Puzzle Game for Kids | Shape & Color Logic Challenge</title>
+
+    <meta name="description"
+        content="A kid-friendly pattern puzzle game that helps children learn shapes, colors, and logic through fun drag-and-drop challenges. Designed for young learners with simple rules, bright visuals, and easy gameplay. Perfect for early learning and brain development.">
+
+    <meta name="keywords"
+        content="kids puzzle game, logic games for kids, color puzzle for children, shape matching game, kids brain development game, drag and drop puzzle kids, educational games for kids, toddler learning game, preschool color shape game, kids pattern recognition game">
+
+    <meta name="author" content="Balamurugan" />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Fun Pattern Puzzle Game for Kids | Shape & Color Logic Challenge" />
+    <meta property="og:description"
+        content="A kid-friendly pattern puzzle game that helps children learn shapes, colors, and logic through fun drag-and-drop challenges. Designed for young learners with simple rules, bright visuals, and easy gameplay. Perfect for early learning and brain development." />
+    <meta property="og:url" content="https://tmbalagan.github.io/games/pattern-recognition/" />
+    <meta property="og:type" content="website" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="../header.css">
+    <style>
+        body {
+            font-family: "Roboto Mono";
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        main {
+            margin-top: 30px;
+        }
+
+        .cell {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 5px;
+            padding: 10px;
+            border-radius: 8px;
+            width: 64px;
+            height: 64px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        }
+
+        .cell.locked {
+            background-color: #f8f8f8;
+            border: 2px solid #1112;
+        }
+
+        .empty {
+            background-color: #fff;
+            border: 2px dashed #ddd;
+        }
+
+        #pattern {
+            display: flex;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 5px 10px;
+        }
+
+        .pattern-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+
+
+        .pattern,
+        .shapes {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .shapes {
+            margin-top: 30px;
+        }
+
+        .shape,
+        .cell {
+            font-size: 35px;
+        }
+
+        .shapes {
+            background-color: #00000005;
+            gap: 20px;
+        }
+
+        .shape {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+            transition: transform .12s ease;
+        }
+
+        .controls {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .controls select {
+            padding: 5px 10px;
+        }
+
+        .controls-wrapper {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .cell.wrong {
+            box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.12);
+        }
+
+        .cell.correct {
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.14);
+        }
+
+        @media (max-width: 767px) {
+
+            .cell,
+            .shape {
+                padding: 6px;
+                font-size: 20px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .cell,
+            .shape {
+                padding: 6px;
+                font-size: 12px;
+                width: 20px;
+                height: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="/games/">🏠 Home</a>
+        </nav>
+    </header>
+    <h1>🎨 Fun Pattern Puzzle Game for Kids 🌟</h1>
+    <main>
+        <div class="controls-wrapper">
+            <div class="controls">
+                <div aria-hidden="false">
+                    <label for="shapes">Level</label>
+                    <select onchange="handleLevelChange()" id="level">
+                        <!-- ABAB -->
+                        <option value="1">Level 1</option>
+                        <!-- ABCABC -->
+                        <option value="2">Level 2</option>
+                        <!-- ABCDABCD -->
+                        <option value="3">Level 3</option>
+                    </select>
+                </div>
+
+                <div aria-hidden="false">
+                    <label for="shapes">Shapes</label>
+                    <select onchange="handleShapeCategoryChange()" id="shapes">
+                        <option value="1">Palette</option>
+                        <option value="2">Animals</option>
+                        <option value="3">Fruits</option>
+                        <option value="4">Vegetables</option>
+                    </select>
+                </div>
+                <div aria-hidden="false">
+                    <label for="rows">Rows</label>
+                    <select onchange="handleRows()" id="rows">
+                        <option value="1">1</option>
+                        <option value="3">3</option>
+                        <option value="5">5</option>
+                        <option value="7">7</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- actions -->
+            <div>
+                <button onclick="evaluatePattern()" class="btn">Evaluate</button>
+                <button onclick="resetPattern()" class="btn">Reset Pattern</button>
+            </div>
+
+        </div>
+        <div>
+            <!-- patterns -->
+            <div class="shapes" id="shapes-pattern"></div>
+            <div id="container" class="pattern-container"></div>
+        </div>
+
+    </main>
+
+</body>
+
+<script>
+    const container = document.getElementById("container");
+
+    let rows = []
+    let ROWS_COUNT = 1
+    let currentLevel = 2
+    let currentShapeCategory = 1
+    let mutationQueue = [];
+
+    const categoryData = {
+        palette: ['🟩', '🔴', '🔷', '🟠'],
+        fruits: ['🍎', '🥭', '🌽', '🍐'],
+        vegetables: ['🍅', '🥕', '🍆', '🥦'],
+        animals: ['🦁', '🐓', '🦚', '🐘', '🦒']
+    }
+
+    let activePattern = [...categoryData.palette];
+
+    /** LEVEL CHANGE */
+    function handleLevelChange() {
+        currentLevel = Number(document.getElementById("level").value);
+        generateRows(activePattern)
+    }
+
+    /** ROW CHANGE */
+
+    function handleRows() {
+        const rowCount = Number(document.getElementById('rows').value)
+        ROWS_COUNT = rowCount
+        generateRows(activePattern)
+    }
+
+
+    /** SHAPE CATEGORY CHANGE */
+    function handleShapeCategoryChange() {
+        currentShapeCategory = Number(document.getElementById("shapes").value);
+
+
+        switch (currentShapeCategory) {
+            case 1:
+                activePattern = [...categoryData.palette];
+                break;
+            case 2:
+                activePattern = [...categoryData.animals];
+                break;
+            case 3:
+                activePattern = [...categoryData.fruits];
+                break;
+            case 4:
+                activePattern = [...categoryData.vegetables];
+                break;
+            default:
+                activePattern = [...categoryData.palette];
+        }
+
+
+        renderDragShapes(activePattern)
+    }
+
+
+    /** MUTATION STRATEGIES */
+    const mutation = {
+        swap: (pattern) => {
+            let newPattern = [...pattern];
+
+            let indexA = Math.floor(Math.random() * newPattern.length);
+            let indexB = Math.floor(Math.random() * newPattern.length);
+
+            while (indexA === indexB) {
+                indexB = Math.floor(Math.random() * newPattern.length);
+            }
+
+            let temp = newPattern[indexA];
+            newPattern[indexA] = newPattern[indexB];
+            newPattern[indexB] = temp;
+
+            return newPattern;
+        },
+        replace: (pattern) => {
+            let newPattern = [...pattern];
+
+            let index = Math.floor(Math.random() * newPattern.length);
+            let newValue = newPattern[Math.floor(Math.random() * newPattern.length)];
+
+            newPattern[index] = newValue;
+
+            return newPattern;
+        },
+        reverse: (pattern) => {
+            let newPattern = [...pattern];
+
+            let start = Math.floor(Math.random() * newPattern.length);
+            let end = Math.floor(Math.random() * newPattern.length);
+
+            if (start > end) [start, end] = [end, start];
+
+            let slice = newPattern.slice(start, end + 1).reverse();
+            newPattern.splice(start, slice.length, ...slice);
+
+            return newPattern;
+        },
+        shuffle: (pattern) => {
+            let newPattern = [...pattern];
+
+            for (let i = newPattern.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1)); // random index from 0 to i
+                [newPattern[i], newPattern[j]] = [newPattern[j], newPattern[i]]; // swap elements
+            }
+
+            return newPattern;
+        },
+    }
+
+    /** Repeat Pattern Generator */
+    const repeatPattern = (basePattern, targetLength) => {
+        const expandedPattern = [];
+        // Loop `targetLength` times to build an output array of exact size `len`
+        for (let i = 0; i < targetLength; i++) {
+            // Use modulo (%) so basePattern restarts when reaching the end
+            // i % basePattern.length cycles through 0,1,2,...,basePattern.length-1 repeatedly
+            expandedPattern.push(basePattern[i % basePattern.length]);
+        }
+        return expandedPattern;
+    };
+
+
+
+    function getUniqueMutation() {
+        const mutationPool = ["SWAP", "REPLACE", "REVERSE", "SHUFFLE"];
+
+        // Refill queue if empty
+        if (mutationQueue.length === 0) {
+            mutationQueue = [...mutationPool];
+        }
+
+        // Pick one mutation randomly from queue
+        const index = Math.floor(Math.random() * mutationQueue.length);
+        return mutationQueue.splice(index, 1)[0]; // remove & return unique item
+    }
+
+
+    /** Generate a Pattern for One Row */
+    const generatePattern = (level, pattern) => {
+
+        const selected = getUniqueMutation();
+        let updatedPattern;
+
+        switch (selected) {
+            case "SWAP":
+                updatedPattern = mutation.swap(pattern)
+                break;
+            case "REPLACE":
+                updatedPattern = mutation.replace(pattern)
+                break;
+            case "REVERSE":
+                updatedPattern = mutation.reverse(pattern)
+                break;
+            case "SHUFFLE":
+                updatedPattern = mutation.shuffle(pattern)
+                break;
+            default:
+                updatedPattern = mutation.swap(pattern)
+                break;
+        }
+
+
+        const fillMissing = (arr, count) => {
+            const result = [...arr];
+            for (let i = 0; i < count; i++) {
+                result[result.length - 1 - i] = "";
+            }
+            return result;
+        };
+
+        const targetLength = 7
+        const finalPattern = repeatPattern(updatedPattern.slice(0, currentLevel), targetLength);
+        const userPattern = [...finalPattern];
+
+        // hide last two cells
+        userPattern[userPattern.length - 1] = "";
+        userPattern[userPattern.length - 2] = "";
+
+
+        return {
+            pattern: finalPattern,
+            user: userPattern
+        }
+    }
+
+
+    /** Generate All Rows (DOM + Data) */
+    function generateRows(pattern) {
+        rows = []
+        for (let i = 0; i < ROWS_COUNT; i++) {
+            // step generate patterns
+            const list = generatePattern(level, pattern)
+            rows.push({
+                pattern: list.pattern,
+                user: list.user
+            })
+        }
+
+        // generate DOM
+        container.innerHTML = ""
+        rows.forEach((row, rowIndex) => {
+            const patternDiv = document.createElement("div");
+            patternDiv.className = "pattern";
+            patternDiv.dataset.index = rowIndex
+
+            row.user.forEach((cell, emojiIndex) => {
+                const span = document.createElement("span");
+                span.className = "cell";
+                if (!cell) {
+                    span.classList.add('empty')
+                } else {
+                    span.classList.add('locked')
+                }
+                span.textContent = cell;
+                span.dataset.index = emojiIndex
+
+                patternDiv.appendChild(span);
+            });
+
+            container.appendChild(patternDiv);
+        })
+
+        attachDragEvents()
+    }
+
+    /** Render Draggable Shapes */
+    function renderDragShapes(activePattern) {
+
+        const patterns = document.getElementById('shapes-pattern')
+        patterns.innerHTML = ""
+        activePattern.forEach((v) => {
+            const div = document.createElement('div')
+            div.className = "shape"
+            div.draggable = true
+            div.dataset.id = v
+            div.innerHTML = v
+            patterns.appendChild(div)
+        })
+
+        generateRows(activePattern.reverse())
+
+    }
+
+
+    /** Attach Drag Events */
+    function attachDragEvents() {
+        document.querySelectorAll('.shape').forEach(shape => {
+            shape.addEventListener('dragstart', e => {
+                e.dataTransfer.setData('shapeId', shape.dataset.id);
+            });
+        });
+
+        document.querySelectorAll('.pattern').forEach((slot, index) => {
+            slot.addEventListener('dragover', e => e.preventDefault())
+
+            slot.addEventListener('drop', e => {
+                e.preventDefault()
+
+                const shapeId = e.dataTransfer.getData('shapeId')
+
+
+                // // Get the index from data attribute
+                const rowIndex = Number(e.currentTarget.dataset.index)
+                const cellIndex = Number(e.target.dataset.index)
+
+
+                // slot
+                const emojiCells = slot.querySelectorAll('.cell');
+
+                emojiCells.forEach((el, i) => {
+                    if (i === cellIndex) {
+                        el.classList.remove('empty', 'wrong');
+                        el.classList.add('filled');
+                    }
+                });
+
+                // Place the cell
+                e.target.textContent = shapeId;
+                rows[rowIndex]['user'][cellIndex] = shapeId
+            })
+        })
+    }
+
+    // INIT CALL
+    renderDragShapes(activePattern)
+
+
+    function evaluatePattern() {
+        // const results = rows.map(({ pattern, user }) => {
+        //     let total = pattern.length;
+        //     let answered = 0;
+        //     let correct = 0;
+
+        //     for (let i = 0; i < user.length; i++) {
+        //         if (user[i] !== "") {
+        //             answered++;
+        //             if (user[i] === pattern[i]) {
+        //                 correct++;
+        //             }
+        //         }
+        //     }
+
+        //     return {
+        //         pattern,
+        //         user,
+        //         answered,
+        //         correct,
+        //         isCorrect: answered === correct
+        //     };
+        // })[0];
+
+        // if (results.isCorrect) {
+        //     console.log("Correct!")
+        // } else {
+        //     console.log("Try again.")
+        // }
+
+
+        let isAllCorrect = true
+
+
+        document.querySelectorAll('.pattern').forEach((slot) => {
+            // Get the parent pattern index
+            const rowIndex = Number(slot.dataset.index);
+
+            // Iterate over all .cell elements inside this slot
+            slot.querySelectorAll('.cell').forEach((el, i) => {
+
+                const isCellFilled = el.classList.contains('filled')
+                const isEmptyCell = el.classList.contains('empty')
+
+
+                if (isCellFilled || isEmptyCell) {
+                    const cellPattern = rows[rowIndex].pattern[i];
+                    console.log(`row[${rowIndex}] cell[${i}]:`, 'row:', cellPattern);
+                    el.classList.remove('filled')
+
+                    if (cellPattern !== el.innerHTML) {
+                        el.classList.add('wrong')
+                        isAllCorrect = false
+                    } else {
+                        el.classList.add('correct')
+                    }
+                }
+            });
+        });
+
+        if (isAllCorrect) {
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            generateRows(activePattern)
+        }
+    }
+
+
+    /** RESET PATTERN */
+    function resetPattern() {
+        generateRows([...activePattern].reverse());
+    }
+
+</script>
+
+</html>
