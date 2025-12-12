@@ -19,3 +19,7 @@ Small interactive games built with HTML, CSS, and JavaScript.
 - **Typing Practice**  
   Source: [`typing`](./typing)  
   Play: <a href="https://tmbalagan.github.io/games/typing/">Click Here</a>
+
+- **Pattern Recognition (New)**  
+  Source: [`pattern-recognition`](./pattern-recognition)  
+  Play: <a href="https://tmbalagan.github.io/games/pattern-recognition/">Click Here</a>
