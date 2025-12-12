@@ -564,7 +564,6 @@
                 if (isCellFilled || isEmptyCell) {
                     const cellPattern = rows[rowIndex].pattern[i];
                     console.log(`row[${rowIndex}] cell[${i}]:`, 'row:', cellPattern);
-                    el.classList.remove('filled')
 
                     if (cellPattern !== el.innerHTML) {
                         el.classList.add('wrong')
