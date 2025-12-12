@@ -443,7 +443,8 @@
                     span.classList.add('locked')
                 }
                 span.textContent = cell;
-                span.dataset.index = emojiIndex
+                span.dataset.c = emojiIndex
+                span.dataset.r = rowIndex
 
                 patternDiv.appendChild(span);
             });
@@ -481,33 +482,35 @@
             });
         });
 
-        document.querySelectorAll('.pattern').forEach((slot, index) => {
-            slot.addEventListener('dragover', e => e.preventDefault())
+        document.querySelectorAll('.cell').forEach((cell, index) => {
+            cell.addEventListener('dragover', e => e.preventDefault())
 
-            slot.addEventListener('drop', e => {
+            cell.addEventListener('drop', e => {
                 e.preventDefault()
 
-                const shapeId = e.dataTransfer.getData('shapeId')
+                // iterate only cell not locked
+                if (!e.target.classList.value.includes('locked')) {
+                    const shapeId = e.dataTransfer.getData('shapeId')
 
 
-                // // Get the index from data attribute
-                const rowIndex = Number(e.currentTarget.dataset.index)
-                const cellIndex = Number(e.target.dataset.index)
+                    // // Get the index from data attribute
+                    const rowIndex = Number(e.target.dataset.r)
+                    const cellIndex = Number(e.target.dataset.c)
 
+                    // every drop remove class names "wrong" and "correct"
+                    const cellEls = document.querySelectorAll('.cell');
+                    cellEls.forEach(el => {
+                        el.classList.remove('wrong', 'correct');
+                    });
 
-                // slot
-                const emojiCells = slot.querySelectorAll('.cell');
+                    // Place the cell
+                    e.target.textContent = shapeId;
+                    rows[rowIndex]['user'][cellIndex] = shapeId
 
-                emojiCells.forEach((el, i) => {
-                    if (i === cellIndex) {
-                        el.classList.remove('empty', 'wrong');
-                        el.classList.add('filled');
-                    }
-                });
-
-                // Place the cell
-                e.target.textContent = shapeId;
-                rows[rowIndex]['user'][cellIndex] = shapeId
+                    // Update classnames for filling cell
+                    cell.classList.remove('empty');
+                    cell.classList.add('filled');
+                }
             })
         })
     }
@@ -550,29 +553,30 @@
         let isAllCorrect = true
 
 
-        document.querySelectorAll('.pattern').forEach((slot) => {
-            // Get the parent pattern index
-            const rowIndex = Number(slot.dataset.index);
-
-            // Iterate over all .cell elements inside this slot
-            slot.querySelectorAll('.cell').forEach((el, i) => {
-
-                const isCellFilled = el.classList.contains('filled')
-                const isEmptyCell = el.classList.contains('empty')
 
 
-                if (isCellFilled || isEmptyCell) {
-                    const cellPattern = rows[rowIndex].pattern[i];
-                    console.log(`row[${rowIndex}] cell[${i}]:`, 'row:', cellPattern);
+        // Iterate over all .cell elements inside this slot
+        document.querySelectorAll('.cell').forEach((el, i) => {
 
-                    if (cellPattern !== el.innerHTML) {
-                        el.classList.add('wrong')
-                        isAllCorrect = false
-                    } else {
-                        el.classList.add('correct')
-                    }
+            const isCellFilled = el.classList.contains('filled')
+            const isEmptyCell = el.classList.contains('empty')
+
+
+            const rowIndex = Number(el.dataset.r);
+            const cellIndex = Number(el.dataset.c)
+
+
+
+            if (isCellFilled || isEmptyCell) {
+                const cellPattern = rows[rowIndex].pattern[cellIndex];
+
+                if (cellPattern !== el.innerHTML) {
+                    el.classList.add('wrong')
+                    isAllCorrect = false
+                } else {
+                    el.classList.add('correct')
                 }
-            });
+            }
         });
 
         if (isAllCorrect) {
