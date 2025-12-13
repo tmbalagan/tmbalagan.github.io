@@ -422,7 +422,8 @@
 
       const targetLength = 7;
       const finalPattern = repeatPattern(
-        updatedPattern.slice(0, currentLevel),
+        // currentLevel + 1 adds more patterns; remove if not needed
+        updatedPattern.slice(0, currentLevel + 1),
         targetLength
       );
       const userPattern = [...finalPattern];
