@@ -208,6 +208,8 @@
               <option value="2">Animals</option>
               <option value="3">Fruits</option>
               <option value="4">Vegetables</option>
+              <option value="5">Numbers</option>
+              <option value="6">Forest</option>
             </select>
           </div>
           <div aria-hidden="false">
@@ -219,6 +221,7 @@
               <option value="7">7</option>
             </select>
           </div>
+          <div id="stars"></div>
         </div>
 
         <!-- actions -->
@@ -243,12 +246,17 @@
     let currentLevel = 2;
     let currentShapeCategory = 1;
     let mutationQueue = [];
+    let stars = document.getElementById("stars");
+    let starsVal = Number(localStorage.getItem("pattern-stars")) ?? 0;
+    stars.innerHTML = starsVal + "🌟";
 
     const categoryData = {
       palette: ["🟩", "🔴", "🔷", "🟠"],
       fruits: ["🍎", "🥭", "🌽", "🍐"],
       vegetables: ["🍅", "🥕", "🍆", "🥦"],
       animals: ["🦁", "🐓", "🦚", "🐘", "🦒"],
+      numbers: ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣"],
+      forest: ["🌿", "🌲", "🌳", "🍁", "⛰️"],
     };
 
     let activePattern = [...categoryData.palette];
@@ -283,6 +291,12 @@
           break;
         case 4:
           activePattern = [...categoryData.vegetables];
+          break;
+        case 5:
+          activePattern = [...categoryData.numbers];
+          break;
+        case 6:
+          activePattern = [...categoryData.forest];
           break;
         default:
           activePattern = [...categoryData.palette];
@@ -633,7 +647,6 @@
         if (isCellFilled || isEmptyCell) {
           const cellPattern = rows[rowIndex].pattern[cellIndex];
 
-
           if (cellPattern !== el.innerHTML) {
             el.classList.add("wrong");
             isAllCorrect = false;
@@ -646,6 +659,14 @@
       if (isAllCorrect) {
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
         generateRows(activePattern);
+
+        let count = starsVal;
+        count++;
+
+        stars.innerHTML = ""
+        stars.innerHTML = count + "🌟";
+
+        localStorage.setItem("pattern-stars", count);
       }
     }
 
